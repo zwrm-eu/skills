@@ -14,7 +14,7 @@ Build a Docker image and run it as Firecracker microVMs. Deployments are asynchr
 
 ```bash
 # In the project directory (next to the Dockerfile)
-zwrm init --name my-app     # writes zwrm.toml (and a GitHub Actions deploy workflow unless --no-workflow)
+zwrm init --name my-app     # writes zwrm.toml (in a git repo, also a GitHub Actions deploy workflow unless --no-workflow)
 zwrm deploy                 # build + launch; streams progress, prints the app URL
 zwrm status                 # confirm machines are running
 ```
@@ -41,7 +41,9 @@ zwrm destroy --all                   # remove app + all machines (add -f to skip
 
 [vm]
   size = "shared-cpu-1x"         # shared-cpu-1x/2x/4x, performance-1x/2x/4x/8x
-  internal_port = 8080
+
+[[services]]
+  internal_port = 8080           # port your app listens on; the proxy routes to it
 
 [env]
   NODE_ENV = "production"        # non-secret env; secrets go through `zwrm secrets`

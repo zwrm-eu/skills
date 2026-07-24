@@ -20,7 +20,7 @@ zwrm postgres list
 
 ## Link to an app
 
-Linking injects the connection string into the app's environment:
+Linking opens network access: the app's VMs can then reach the database on port 5432 via its private IP. It does **not** set any env var — set `DATABASE_URL` yourself via `zwrm secrets set`, using the connection info from `zwrm postgres connect`. The app needs private networking enabled (`[network] private = true` in zwrm.toml).
 
 ```bash
 zwrm postgres link my-db --app my-api
@@ -116,5 +116,5 @@ zwrm postgres unlink <database-name> — Unlink a database from an app
 
 ## See also
 
-- [zwrm-secrets](../zwrm-secrets/SKILL.md) — set DATABASE_URL manually if not using `link`
+- [zwrm-secrets](../zwrm-secrets/SKILL.md) — set DATABASE_URL for the app (`link` opens the network path only)
 - [zwrm-deploy](../zwrm-deploy/SKILL.md) — deploy apps that use the database

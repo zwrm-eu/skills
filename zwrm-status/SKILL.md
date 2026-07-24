@@ -34,7 +34,7 @@ zwrm dashboard — Show monitoring dashboard URLs
 ## Tips
 
 - Run `zwrm status` after `zwrm deploy` to confirm machines are running.
-- Machine statuses: `created`, `starting`, `running`, `stopping`, `stopped`, `destroyed`. A `stopped` machine under `[autostop]` is normal — it wakes on the next request.
+- Common machine statuses: `pending`, `starting`, `running`, `stopping`, `stopped`, `failed`. A `stopped` machine under `[autostop]` is normal — it wakes on the next request.
 - For live output, pair with `zwrm logs --follow`.
 
 ## See also
