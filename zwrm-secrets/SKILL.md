@@ -1,85 +1,75 @@
 ---
 name: zwrm-secrets
 description: |
-  Manage encrypted secrets and environment variables for ZWRM apps and agents. Use this skill when the user wants to set environment variables, configure API keys, manage secrets, load a .env file, or inject configuration into running VMs. Triggers on "set secret", "environment variable", "env var", "API key", "configure secret", "load .env", "secrets", or "set DATABASE_URL".
+  Manage encrypted secrets and environment variables for ZWRM apps, organizations, and agents. Use this skill when the user wants to set environment variables, configure API keys, manage secrets, load a .env file, or inject configuration into VMs. Triggers on "set secret", "environment variable", "env var", "API key", "configure secret", "load .env", "secrets", or "set DATABASE_URL".
 allowed-tools:
   - Bash(zwrm *)
 ---
 
 # zwrm secrets
 
-Encrypted secret and environment variable management for apps and coding agents. Secrets are stored encrypted in the control plane database and injected into VMs at boot.
+Encrypted secret management at three scopes: **app** (`zwrm secrets`), **organization** (`zwrm org secrets`, inherited by the org's apps), and **agent** (`zwrm agent secrets`). Values are encrypted at rest in the control plane and injected into VMs at boot.
 
-## When to use
-
-- You need to set API keys, database URLs, or other config for an app
-- You want to load secrets from a .env file
-- You need to manage secrets for coding agent VMs
-
-## Quick start
+## App secrets
 
 ```bash
-# Set a secret for the current app
 zwrm secrets set DATABASE_URL "postgres://user:pass@host:5432/db"
-
-# Set a secret for a specific app
 zwrm secrets set API_KEY "sk-..." --app my-api
-
-# List secrets (shows names and metadata, never values)
-zwrm secrets list
-
-# Remove a secret
-zwrm secrets unset DATABASE_URL
+zwrm secrets add --from-file .env.production --app my-api
+zwrm secrets list          # names + metadata only, never values
+zwrm secrets unset API_KEY
 ```
 
-## Bulk loading
+## Organization secrets
+
+Shared across the org — good for keys every app needs:
 
 ```bash
-# Load all variables from a .env file
-zwrm secrets add --from-file .env
-
-# Load for a specific app
-zwrm secrets add --from-file .env.production --app my-api
+zwrm org secrets set SHARED_API_KEY "value"
+zwrm org secrets add --from-file .env.shared
+zwrm org secrets list
 ```
 
 ## Agent secrets
 
-Coding agents have their own secret namespace:
+Coding agents have their own namespace (see [zwrm-agent](../zwrm-agent/SKILL.md)):
 
 ```bash
-# Set secrets for an agent
-zwrm agent secrets set GITHUB_TOKEN "ghp_..."
-zwrm agent secrets set ANTHROPIC_API_KEY "sk-ant-..."
-
-# List agent secrets
-zwrm agent secrets list
-
-# Remove agent secret
-zwrm agent secrets unset GITHUB_TOKEN
-
-# Bulk load for agents
+zwrm agent secrets set GITHUB_TOKEN "ghp_..." --instance work
 zwrm agent secrets add --from-file .env.agent
 ```
 
-## Organization-wide secrets
+## Command reference
 
-```bash
-# Set org-level secrets (inherited by all apps)
-zwrm secrets set --org SHARED_API_KEY "key-value"
+```text
+zwrm secrets — Manage application secrets
 
-# List org secrets
-zwrm secrets list --org
+zwrm secrets add --from-file <path> — Add secrets from a file
+      --app string         Application name
+      --app-id string      Application ID
+      --from-file string   Path to .env file
+
+zwrm secrets list — List secrets
+      --app string      Application name
+      --app-id string   Application ID
+
+zwrm secrets set <name> <value> — Set a secret
+      --app string      Application name
+      --app-id string   Application ID
+
+zwrm secrets unset <name> — Remove a secret
+      --app string      Application name
+      --app-id string   Application ID
 ```
 
 ## Tips
 
-- **`secrets list` never shows values** — only names, versions, and timestamps. This is by design.
-- **Secrets are staged** until deployed. A new deployment picks up staged secrets automatically.
-- **Use `--from-file`** for bulk loading instead of setting secrets one-by-one (avoids shell history exposure).
-- **Agent secrets** are prompted interactively on first `zwrm agent` connect if not already set (GitHub token, API keys, git config).
-- Secrets are encrypted at rest in the control plane database.
+- **`secrets list` never shows values** — by design. Don't try to print them from inside the VM either unless the user explicitly asks.
+- **New values apply at next boot/deploy.** Redeploy the app (or restart the agent) after changing secrets.
+- **Use `--from-file`** for bulk loads — it keeps values out of shell history.
+- Non-secret config can live in `zwrm.toml` under `[env]`; anything sensitive belongs here instead.
 
 ## See also
 
 - [zwrm-deploy](../zwrm-deploy/SKILL.md) — deploy after setting secrets
-- [zwrm-agent](../zwrm-agent/SKILL.md) — coding agents that consume these secrets
+- [zwrm-agent](../zwrm-agent/SKILL.md) — agent-scoped secrets
