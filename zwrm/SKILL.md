@@ -1,71 +1,131 @@
 ---
 name: zwrm
 description: |
-  MicroVM orchestration via the ZWRM CLI. Use this skill whenever the user wants to deploy an app, manage VMs, create sandboxes, manage Postgres databases, view logs, manage secrets, or connect to a coding agent. Also use when they say "deploy", "launch", "scale", "spin up a VM", "create a sandbox", "start a database", "check status", or reference managing infrastructure on ZWRM. This provides a complete control plane for deploying and managing lightweight Firecracker microVMs. Do NOT trigger for local file operations, git commands, or code editing tasks unrelated to ZWRM.
+  MicroVM orchestration via the ZWRM CLI. Use this skill whenever the user wants to deploy an app, manage VMs, create sandboxes, manage Postgres databases, view logs, manage secrets, run coding agents, schedule agent runs, or connect MCP tools on ZWRM. Also use when they say "deploy", "launch", "scale", "spin up a VM", "create a sandbox", "start a database", "check status", or reference managing infrastructure on ZWRM. Do NOT trigger for local file operations, git commands, or code editing tasks unrelated to ZWRM.
 allowed-tools:
   - Bash(zwrm *)
 ---
 
 # ZWRM CLI
 
-MicroVM orchestration CLI. Deploy apps, manage sandboxes, Postgres databases, secrets, logs, and coding agents — all backed by Firecracker microVMs.
+Deploy and manage lightweight Firecracker microVMs: apps, sandboxes, managed Postgres, persistent volumes, secrets, coding agents, and an MCP gateway — all through one CLI.
 
-Run `zwrm --help` or `zwrm <command> --help` for full option details.
+Generated from zwrm `v0.16.2`. `zwrm <command> --help` is always authoritative.
 
 ## Prerequisites
 
-Must be installed and configured. Check with `zwrm status`.
-
-If not ready, see [rules/install.md](rules/install.md). For security guidelines, see [rules/security.md](rules/security.md).
-
-## Workflow
-
-Follow this pattern based on what you need:
-
-| Need                          | Command / Skill                                    | When                                           |
-| ----------------------------- | -------------------------------------------------- | ---------------------------------------------- |
-| Deploy an application         | `zwrm deploy`                                      | Have a Dockerfile or zwrm.toml                 |
-| Run ephemeral code            | `zwrm sandbox create`                              | Need a disposable VM for execution             |
-| Persistent coding environment | `zwrm agent <type>`                                | Need a long-lived dev VM with persistent state |
-| Managed database              | `zwrm postgres create`                             | Need a Postgres instance                       |
-| Environment variables         | `zwrm secrets set`                                 | Configure app or agent secrets                 |
-| View output                   | `zwrm logs`                                        | Check VM console output                        |
-| Check state                   | `zwrm status`                                      | See app, machine, or system status             |
-| Scale up/down                 | `zwrm scale <count>`                               | Adjust number of running machines              |
-
-## Command Overview
+The `zwrm` binary must be installed and authenticated. Check with:
 
 ```bash
-# App lifecycle
-zwrm init                          # Generate zwrm.toml
-zwrm deploy                        # Build and deploy
-zwrm status                        # Show app status
-zwrm scale <count>                 # Scale machines
-zwrm destroy [--all]               # Tear down
-
-# Sandboxes
-zwrm sandbox create --template python --timeout 10m
-zwrm sandbox exec <id> -- <cmd>
-zwrm sandbox destroy <id>
-
-# Coding agents
-zwrm agent claude                  # Connect to Claude agent VM
-zwrm agent codex                   # Connect to Codex agent VM
-zwrm agent list                    # List running agents
-
-# Postgres
-zwrm postgres create <name> --size shared-cpu-1x
-zwrm postgres connect <name>
-zwrm postgres backup enable <name>
-
-# Secrets
-zwrm secrets set <name> <value>
-zwrm secrets list
-zwrm secrets unset <name>
-
-# Logs
-zwrm logs --app <name>
-zwrm logs --follow
+zwrm auth whoami
 ```
 
-For detailed command reference, run `zwrm <command> --help` or see the individual skill files.
+If not installed or not logged in, see [rules/install.md](rules/install.md). For security guidelines, see [rules/security.md](rules/security.md).
+
+## Picking the right command
+
+| Need | Command | Skill |
+| --- | --- | --- |
+| Deploy an application | `zwrm deploy` | [zwrm-deploy](../zwrm-deploy/SKILL.md) |
+| Run ephemeral code in isolation | `zwrm sandbox create` / `zwrm sandbox run` | [zwrm-sandbox](../zwrm-sandbox/SKILL.md) |
+| Managed database | `zwrm postgres create` | [zwrm-postgres](../zwrm-postgres/SKILL.md) |
+| Persistent storage | `zwrm volumes create` | [zwrm-volumes](../zwrm-volumes/SKILL.md) |
+| Environment variables / API keys | `zwrm secrets set` | [zwrm-secrets](../zwrm-secrets/SKILL.md) |
+| See VM output, get a shell | `zwrm logs` / `zwrm ssh` | [zwrm-logs](../zwrm-logs/SKILL.md) |
+| Check what's running | `zwrm status` | [zwrm-status](../zwrm-status/SKILL.md) |
+| Autonomous coding agent | `zwrm agent run` | [zwrm-agent](../zwrm-agent/SKILL.md) |
+| Cron / event-driven agent runs | `zwrm schedules` / `zwrm triggers` | [zwrm-agent](../zwrm-agent/SKILL.md) |
+| MCP tools for agents | `zwrm mcp` | [zwrm-mcp](../zwrm-mcp/SKILL.md) |
+
+## Command map
+
+```text
+zwrm admin      Admin operations for the control plane
+zwrm agent      Manage agents and their workspaces
+zwrm auth       Manage authentication
+zwrm dashboard  Show monitoring dashboard URLs
+zwrm deploy     Deploy an application
+zwrm destroy    Destroy machines or entire application
+zwrm host       Manage hosts in the cluster
+zwrm init       Initialize a new zwrm.toml configuration
+zwrm logs       View VM console logs
+zwrm mcp        Run an MCP server exposing autonomous agent runs (stdio)
+zwrm org        Manage organizations and org resources
+zwrm postgres   Manage PostgreSQL databases
+zwrm routes     Manage application routes
+zwrm sandbox    Manage sandboxes
+zwrm scale      Scale application to desired number of machines
+zwrm schedules  Manage scheduled agent runs (cron → agent runs)
+zwrm secrets    Manage application secrets
+zwrm sftp       Transfer files to/from a running VM via SFTP
+zwrm skills     Manage the skill library (validated bundles agents can enable)
+zwrm ssh        SSH into a running VM or run a remote command on it
+zwrm status     Show application and machine status
+zwrm templates  Manage agent templates
+zwrm transfer   Move an app to another organization
+zwrm triggers   Manage inbound triggers (external events → agent runs)
+zwrm volumes    Manage persistent volumes
+```
+
+## Global flags
+
+Available on every command:
+
+```text
+      --api-url string   Control plane API URL (default: https://zwrm.io)
+      --config string    config file (default is $HOME/.zwrm/config.toml)
+      --org string       Organization slug or ID (overrides env/config)
+  -v, --verbose          Enable verbose output
+```
+
+## Authentication and orgs
+
+```text
+zwrm auth — Manage authentication
+
+zwrm auth login — Login via browser or API token
+      --token string   API token (for headless/SSH environments)
+
+zwrm auth logout — Clear saved credentials
+
+zwrm auth token — Show current token info
+
+zwrm auth tokens — Manage API tokens
+
+zwrm auth tokens create — Create a new API token (optionally capability-scoped)
+      --expiry string    Token expiry duration (e.g. '8760h' for 1 year, empty for no expiry)
+      --name string      Token name (e.g. 'github-actions')
+      --org string       Organization id or slug the scoped token is bound to (default: your target org)
+      --scopes strings   Capability set (comma-separated resource:action, e.g. apps:read,deploy,logs:read); empty = unrestricted token
+
+zwrm auth tokens list — List API tokens
+
+zwrm auth tokens revoke <token-id> — Revoke an API token
+
+zwrm auth whoami — Show current authenticated user
+
+zwrm org — Manage organizations and org resources
+
+zwrm org create <name> — Create a new organization
+
+zwrm org list — List organizations
+
+zwrm org secrets — Manage organization-wide secrets
+
+zwrm org secrets add --from-file <path> — Add organization secrets from a file
+      --from-file string   Path to .env file
+
+zwrm org secrets list — List organization secrets
+
+zwrm org secrets set <name> <value> — Set an organization secret
+
+zwrm org secrets unset <name> — Remove an organization secret
+```
+
+Resources belong to organizations. The org scope for an invocation resolves in this order: `--org` flag → `ZWRM_ORG_ID` env var → `org` in `zwrm.toml`. With no scope, reads span all orgs you belong to and new resources land in your personal org.
+
+API tokens can be capability-scoped (`zwrm auth tokens create --scopes apps:read,deploy,logs:read`) — prefer scoped tokens for CI and automation.
+
+## Operator commands
+
+`zwrm host` (host listing, drain/undrain for maintenance) and `zwrm admin` (control-plane backups, secrets-keyring rotation) are cluster-operator commands. They require host-admin access and are not needed for normal app work; see `zwrm host --help` and `zwrm admin --help`.

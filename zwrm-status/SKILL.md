@@ -1,46 +1,41 @@
 ---
 name: zwrm-status
 description: |
-  Check the status of apps, machines, deployments, and the ZWRM system. Use this skill when the user asks about the state of their infrastructure, wants to see what's running, check deployment progress, view machine health, or get system statistics. Triggers on "status", "what's running", "check my app", "is it deployed", "system health", "how many machines", or "show me the state".
+  Check the status of apps, machines, and deployments on ZWRM. Use this skill when the user asks about the state of their infrastructure, wants to see what's running, check deployment progress, view machine health, or find monitoring dashboards. Triggers on "status", "what's running", "check my app", "is it deployed", "how many machines", "show me the state", or "dashboard".
 allowed-tools:
   - Bash(zwrm *)
 ---
 
 # zwrm status
 
-Check the status of apps, machines, deployments, and the overall system.
-
-## When to use
-
-- You want to see what's currently running
-- You need to check if a deployment succeeded
-- You want machine IPs, resource allocation, or uptime
+Check the status of apps, machines, and deployments.
 
 ## Quick start
 
 ```bash
-# Status of current app (reads zwrm.toml)
-zwrm status
-
-# Status of a specific app
-zwrm status --app my-api
-
-# System-wide status
-zwrm status --system
+zwrm status                 # current app (reads zwrm.toml)
+zwrm status --app my-api    # a specific app
+zwrm dashboard              # monitoring dashboard URLs (--open to launch)
 ```
 
-## What it shows
+Shows app info (name, ID, machine count), machines (ID, status, IP, size, region, uptime), and the latest deployment.
 
-- **App info**: name, ID, machine count
-- **Machines**: ID, status, IP, size, region, uptime
-- **Deployments**: latest deployment status, image, timestamp
+## Command reference
+
+```text
+zwrm status — Show application and machine status
+      --app string      Application name
+      --app-id string   Application ID
+
+zwrm dashboard — Show monitoring dashboard URLs
+      --open   Open the system overview dashboard in a browser
+```
 
 ## Tips
 
 - Run `zwrm status` after `zwrm deploy` to confirm machines are running.
-- Machine statuses: `created`, `starting`, `running`, `stopping`, `stopped`, `destroyed`.
-- Use `--app` to check apps other than the one in your current `zwrm.toml`.
-- For real-time output, combine with `zwrm logs --follow`.
+- Common machine statuses: `pending`, `starting`, `running`, `stopping`, `stopped`, `failed`. A `stopped` machine under `[autostop]` is normal — it wakes on the next request.
+- For live output, pair with `zwrm logs --follow`.
 
 ## See also
 

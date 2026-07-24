@@ -1,50 +1,43 @@
 ---
 name: zwrm-installation
 description: |
-  Install and configure the ZWRM CLI for microVM orchestration.
+  Install and authenticate the ZWRM CLI.
 ---
 
-# ZWRM CLI Installation
+# ZWRM CLI installation
 
-## Quick Setup
-
-Download the latest binary for your platform:
+## Install
 
 ```bash
-# macOS (Apple Silicon)
-curl -fsSL https://github.com/zwrm-eu/cli/releases/latest/download/zwrm-darwin-arm64 -o /usr/local/bin/zwrm
-chmod +x /usr/local/bin/zwrm
+# Linux / macOS (installs to /usr/local/bin or ~/.local/bin)
+curl -fsSL https://releases.zwrm.eu/zwrm/install.sh | bash
 
-# macOS (Intel)
-curl -fsSL https://github.com/zwrm-eu/cli/releases/latest/download/zwrm-darwin-amd64 -o /usr/local/bin/zwrm
-chmod +x /usr/local/bin/zwrm
+# macOS via Homebrew
+brew tap zwrm-eu/tap
+brew install zwrm
 
-# Linux (x86_64)
-curl -fsSL https://github.com/zwrm-eu/cli/releases/latest/download/zwrm-linux-amd64 -o /usr/local/bin/zwrm
-chmod +x /usr/local/bin/zwrm
+# Pin a version
+curl -fsSL https://releases.zwrm.eu/zwrm/install.sh | bash -s -- --version=v1.0.0
 ```
 
-## Configuration
+## Authenticate
 
 ```bash
-# Set the control plane endpoint
-zwrm config set api_url https://your-control-plane.example.com
+# Browser login flow
+zwrm auth login
 
-# Verify connectivity
-zwrm status
+# Headless environments (SSH sessions, CI): use an API token
+zwrm auth login --token <api-token>
+
+# Verify
+zwrm auth whoami
 ```
 
-Configuration is stored at `~/.zwrm/config.toml`.
-
-## Verify
-
-```bash
-zwrm --help
-zwrm status
-```
+Credentials and the control-plane URL live in `~/.zwrm/config.toml`. `ZWRM_API_TOKEN` in the environment also works for one-off invocations.
 
 ## If commands fail
 
-- Ensure the binary is in your PATH
-- Check that the control plane URL is configured: `cat ~/.zwrm/config.toml`
-- Verify the control plane is reachable: `curl -s https://your-control-plane/v1/health`
+- Ensure the binary is on PATH: `zwrm --help`
+- Not logged in / token expired: `zwrm auth login`
+- Wrong control plane: pass `--api-url` or check `~/.zwrm/config.toml`
+- Wrong org: pass `--org <slug>` (see `zwrm org list`)
