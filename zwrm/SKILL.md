@@ -10,7 +10,7 @@ allowed-tools:
 
 Deploy and manage lightweight Firecracker microVMs: apps, sandboxes, managed Postgres, persistent volumes, secrets, coding agents, and an MCP gateway — all through one CLI.
 
-Generated from zwrm `v0.17.2`. `zwrm <command> --help` is always authoritative.
+Generated from zwrm `v0.18.0`. `zwrm <command> --help` is always authoritative.
 
 ## Prerequisites
 
@@ -43,6 +43,7 @@ If not installed or not logged in, see [rules/install.md](rules/install.md). For
 zwrm admin      Admin operations for the control plane
 zwrm agent      Manage agents and their workspaces
 zwrm auth       Manage authentication
+zwrm credits    Prepaid credits: balance, history, usage
 zwrm dashboard  Show monitoring dashboard URLs
 zwrm deploy     Deploy an application
 zwrm destroy    Destroy machines or entire application
