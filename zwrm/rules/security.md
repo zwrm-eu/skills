@@ -8,10 +8,19 @@ description: |
 
 ## Secrets
 
+- **Never write a literal secret value into a command.** Anything in argv is captured in shell
+  history and readable from the process table. Pipe it in instead:
+  `printf '%s' "$TOKEN" | zwrm secrets set TOKEN --stdin`. Referencing an already-exported
+  variable (`zwrm secrets set TOKEN "$TOKEN"`) is the acceptable fallback.
+- **If you don't have a secret's value, ask for it** — have the user export it, put it in a
+  `.env` file, or run the `--stdin` form themselves. Never invent or guess one.
 - **Never echo or log secret values.** `zwrm secrets list` shows only names and metadata, never values — keep it that way in your own output too.
 - **Never hardcode secrets** in `zwrm.toml`, Dockerfiles, or source code. Use `zwrm secrets set` (or `zwrm org secrets` / `zwrm agent secrets`).
-- **Prefer `--from-file`** for bulk loading from `.env` files over setting values one-by-one on the command line (keeps values out of shell history).
-- Secrets are encrypted at rest in the control plane and injected into VMs at boot via a metadata service.
+- **Prefer `--from-file`** for bulk loading from `.env` files. Confirm the exact path with the
+  user first — a wider `.env` than they meant would be uploaded key-by-key.
+- Secret values travel over HTTPS to one destination: the control plane configured in
+  `~/.zwrm/config.toml` (or `--api-url`). They are encrypted at rest there and injected into
+  the org's VMs at boot via an internal metadata service.
 
 ## Tokens
 
