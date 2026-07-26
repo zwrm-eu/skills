@@ -10,7 +10,7 @@ allowed-tools:
 
 Deploy and manage lightweight Firecracker microVMs: apps, sandboxes, managed Postgres, persistent volumes, secrets, coding agents, and an MCP gateway — all through one CLI.
 
-Generated from zwrm `v0.18.1`. `zwrm <command> --help` is always authoritative.
+Generated from zwrm `v0.18.2`. `zwrm <command> --help` is always authoritative.
 
 ## Prerequisites
 
@@ -118,7 +118,8 @@ zwrm org secrets add --from-file <path> — Add organization secrets from a file
 
 zwrm org secrets list — List organization secrets
 
-zwrm org secrets set <name> <value> — Set an organization secret
+zwrm org secrets set <name> [value] — Set an organization secret
+      --stdin   Read the secret value from standard input instead of argv
 
 zwrm org secrets unset <name> — Remove an organization secret
 ```

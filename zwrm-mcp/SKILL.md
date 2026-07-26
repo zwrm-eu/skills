@@ -12,20 +12,30 @@ The MCP gateway sits between agents and external MCP servers. **Upstreams** are 
 
 ## Register an upstream
 
+Registering an upstream means handling its credential, so the same rule as
+[zwrm-secrets](../zwrm-secrets/SKILL.md) applies: **reference an environment variable, never
+write a literal token into the command.** If you don't have the value, ask the user to export
+it first.
+
 ```bash
 # Bearer/header auth
-zwrm mcp upstream add linear https://mcp.linear.app/mcp --bearer-token "lin_..."
+zwrm mcp upstream add linear https://mcp.linear.app/mcp --bearer-token "$LINEAR_API_KEY"
 
 # Per-user OAuth: each member connects their own account
 zwrm mcp upstream add ms365 https://gateway.example/ms365 --oauth
 
 # Service-account OAuth (client_credentials)
 zwrm mcp upstream add crm https://crm.example/mcp \
-  --oauth-client-id ... --oauth-client-secret ... --oauth-token-url https://auth.example/token
+  --oauth-client-id "$CRM_CLIENT_ID" \
+  --oauth-client-secret "$CRM_CLIENT_SECRET" \
+  --oauth-token-url https://auth.example/token
 
 zwrm mcp upstream sync linear      # refresh its tool catalog
 zwrm mcp upstream tools linear
 ```
+
+Prefer `--oauth` where the upstream supports it: each member signs in with their own account,
+so there's no long-lived shared secret to store or rotate.
 
 ## Compose a virtual server
 

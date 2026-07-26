@@ -45,9 +45,15 @@ zwrm agent update my-project --model opus --effort high \
   --instructions "Prefer small PRs. Never force-push." \
   --size performance-2x
 zwrm agent budget my-project --daily-usd 20 --max-runs 50
-zwrm agent secrets set GITHUB_TOKEN "ghp_..." --instance my-project
 zwrm agent logs my-project
+
+# Secrets: pipe the value in, never type it into the command
+printf '%s' "$GITHUB_TOKEN" | zwrm agent secrets set GITHUB_TOKEN --stdin --instance my-project
 ```
+
+Never write a literal token into a `zwrm` command. If you don't have the value, ask the user
+to export it (then reference `"$VAR"`) or to run the `--stdin` form themselves — see
+[zwrm-secrets](../zwrm-secrets/SKILL.md).
 
 `--allowed-scopes` on `update` constrains what the agent's boot token may do against the platform API (e.g. `apps:read,deploy,logs:read`).
 
@@ -169,8 +175,9 @@ zwrm agent secrets add --from-file <path> — Add secrets from a file
 zwrm agent secrets list — List secrets for an agent
       --instance string   Agent instance name (default "default")
 
-zwrm agent secrets set <name>=<value> — Set a secret for an agent
+zwrm agent secrets set <name> [value] — Set a secret for an agent
       --instance string   Agent instance name (default "default")
+      --stdin             Read the secret value from standard input instead of argv
 
 zwrm agent secrets unset <name> — Remove a secret from an agent
       --instance string   Agent instance name (default "default")

@@ -4,9 +4,32 @@ Skills that teach AI coding agents (Claude Code, Cursor, Codex, …) the `zwrm` 
 
 ## Install
 
+Install all ten skills into one agent — Claude Code here:
+
 ```bash
-npx -y skills add zwrm-eu/skills --full-depth --global --all --yes
+npx -y skills add zwrm-eu/skills --agent claude-code --skill '*' --global --yes
 ```
+
+Other common targets:
+
+```bash
+# Several agents at once
+npx -y skills add zwrm-eu/skills --agent claude-code cursor codex --skill '*' --global --yes
+
+# Just the hub skill, which links to the rest on demand
+npx -y skills add zwrm-eu/skills --agent claude-code --skill zwrm --global --yes
+
+# This project only, rather than your user directory (drop --global)
+npx -y skills add zwrm-eu/skills --agent claude-code --skill '*' --yes
+
+# Pick interactively
+npx -y skills add zwrm-eu/skills
+```
+
+Prefer `--agent` over `--all`. `--all` is shorthand for `--agent '*' --skill '*' -y`, which
+fans every skill out to every agent the installer knows about — dozens of tools you likely
+don't have, and a wall of "does not support global skill installation" errors from the few
+that have no global scope. Naming your agents avoids all of it.
 
 ## Skills
 
@@ -29,4 +52,4 @@ This repository is generated from the [zwrm-eu/zwrm](https://github.com/zwrm-eu/
 
 To change these skills, edit `cmd/gen-skills/src/` in the main repo. Pull requests against this repository will be overwritten by the next release.
 
-Last generated from zwrm `v0.18.1`.
+Last generated from zwrm `v0.18.2`.
