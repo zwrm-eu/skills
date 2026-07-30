@@ -191,7 +191,7 @@ zwrm agent skills enable <agent> <skill> — Toggle a skill for an agent (live-s
 zwrm agent skills list <agent> — List the agent's skill states
 
 zwrm agent update <instance-or-id> — Update an agent's defaults (size, model, effort, instructions, budget, TTL, scopes)
-      --allowed-scopes strings   Boot-token capabilities (comma-separated resource:action, e.g. apps:read,deploy,secrets:read,secrets:write,postgres:read,postgres:write,volumes:read,volumes:write,routes:write,logs:read,skills:read,skills:write,memories:read,memories:write,schedules:read,schedules:write,agents:read,triggers:read,triggers:write,ssh,scale,destroy,identity); empty resets to default
+      --allowed-scopes strings   Boot-token capabilities (comma-separated resource:action, e.g. apps:read,deploy,secrets:read,secrets:write,postgres:read,postgres:write,volumes:read,volumes:write,routes:write,logs:read,skills:read,skills:write,memories:read,memories:write,schedules:read,schedules:write,agents:read,triggers:read,triggers:write,mcp:read,mcp:write,ssh,scale,destroy,identity); empty resets to default
       --daily-budget float       Daily spend cap in USD (0 = unlimited)
       --effort string            Default reasoning effort: low|medium|high|xhigh|max
       --instructions string      Per-agent system-prompt append
