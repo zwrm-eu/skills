@@ -89,6 +89,10 @@ zwrm mcp install <server> — Print client config to connect to a virtual server
 
 zwrm mcp server — Manage virtual MCP servers (curated tool compositions)
 
+zwrm mcp server add-upstream <server> — Add upstreams to an existing virtual server
+      --replace                Overwrite the tool selection of an upstream already in the composition
+      --upstream stringArray   Upstream selection "name" or "name:tool1,tool2" (repeatable)
+
 zwrm mcp server create <name> — Create a virtual server from upstream tool selections
       --description string     Description (served as MCP instructions)
       --upstream stringArray   Upstream selection "name" or "name:tool1,tool2" (repeatable)
@@ -96,6 +100,8 @@ zwrm mcp server create <name> — Create a virtual server from upstream tool sel
 zwrm mcp server get <name> — Show a virtual server and its exposed tools
 
 zwrm mcp server list — List virtual servers
+
+zwrm mcp server remove-upstream <server> <upstream>... — Remove upstreams from a virtual server
 
 zwrm mcp server rm <name> — Remove a virtual server
 
