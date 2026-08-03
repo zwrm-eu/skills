@@ -81,7 +81,9 @@ zwrm deploy — Deploy an application
       --app string       Application name (default: from zwrm.toml)
       --context string   Build context directory (default: current directory)
       --force-build      Force rebuild, bypass cache
+      --ref string       Branch, tag, or commit for --repo (alternative to an @ref suffix; don't use both)
       --replicas int     Number of instances to deploy (default 1)
+      --repo string      Deploy from a GitHub repo (github.com/owner/repo[@ref]); server-side clone, requires --app
 
 zwrm scale <count> — Scale application to desired number of machines
       --app string      Application name
