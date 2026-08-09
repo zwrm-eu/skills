@@ -49,6 +49,10 @@ zwrm mcp server get dev-tools
 
 ## Attach to an agent
 
+An agent token needs `connectors:read` to list its own attachments and
+`connectors:write` to attach, detach, or verify them. Copying connectors from a
+different agent is human-only.
+
 ```bash
 zwrm agent connectors attach my-agent dev-tools
 zwrm agent connectors attach my-agent prod-tools --escalate   # human approves each use in autonomous runs
@@ -134,7 +138,7 @@ zwrm mcp upstream tools <name> — List an upstream's synced tool catalog
 ## Tips
 
 - **Curate tools per virtual server** (`name:tool1,tool2`) — smaller tool sets make agents faster and safer than exposing whole upstreams.
-- **`--escalate` on attach** pauses that connector's tool calls for human approval during autonomous runs — use it for anything that writes to production systems.
+- **`--escalate` on attach** pauses normal connector tool calls for human approval during autonomous runs. It is an orchestration safeguard, not a sandbox boundary against arbitrary code already executing inside the agent VM; narrow write scopes or separate lower-trust agents into another org.
 - **`verify` before debugging an agent** — it tests the full path (gateway → upstream → auth) in one shot.
 - On a per-user OAuth upstream, tool calls run under whoever's grant applies (the caller's, or the agent's own via `--agent` connect).
 
