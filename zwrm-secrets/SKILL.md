@@ -32,7 +32,7 @@ If you don't have the value, **ask the user to set it** — either by exporting 
 and letting you reference `"$VAR"`, by putting it in a `.env` file, or by running
 the `--stdin` form themselves. Never invent, guess, or echo a secret value.
 
-`--stdin` needs zwrm `v0.23.2` or newer. If it fails with `unknown flag:
+`--stdin` needs zwrm `v0.23.3` or newer. If it fails with `unknown flag:
 --stdin`, the installed binary is older — fall back to form 2 or 3 above (both
 work on every version), and suggest `zwrm auth whoami` / an upgrade. Don't fall
 back to a literal value.
