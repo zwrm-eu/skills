@@ -52,4 +52,4 @@ This repository is generated from the [zwrm-eu/zwrm](https://github.com/zwrm-eu/
 
 To change these skills, edit `cmd/gen-skills/src/` in the main repo. Pull requests against this repository will be overwritten by the next release.
 
-Last generated from zwrm `v0.23.7`.
+Last generated from zwrm `v0.23.8`.
