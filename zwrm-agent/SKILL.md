@@ -10,19 +10,22 @@ allowed-tools:
 
 Agents are named, org-scoped identities with defaults (model, effort, VM size, instructions), their own secrets, memory, skills, and MCP connectors. Use them two ways:
 
-- **Interactive workspace**: `zwrm agent claude` attaches you to a persistent dev VM running Claude Code (or `zwrm agent pi` / `zwrm agent codex` for those harnesses).
+- **Interactive workspace**: `zwrm agent connect <name>` attaches you to a persistent dev VM and opens its configured runtime; `zwrm agent ssh <name>` opens a raw shell instead.
 - **Autonomous runs**: `zwrm agent run` executes a prompt headlessly on a fresh VM and reports the result.
 
 ## Interactive workspaces
 
 ```bash
-zwrm agent claude                    # default instance; creates on first use
-zwrm agent claude my-project         # named instance = separate volume per project
+zwrm agent create my-project --runtime zwrm  # or claude / codex; does not boot a VM
+zwrm agent connect my-project               # open the configured agent process
+zwrm agent ssh my-project                   # raw shell, without launching the agent
 zwrm agent list
 zwrm agent resize my-project --volume 20GB
 zwrm agent destroy my-project        # stop the VM, KEEP the volume
 zwrm agent delete my-project         # remove VM + volume + record (-f to skip confirm)
 ```
+
+In a terminal, `connect` and `ssh` preflight the name and can offer to create a missing agent after confirmation. In scripts, a missing name is an error; call `create` explicitly.
 
 ## Autonomous runs
 
@@ -91,15 +94,13 @@ zwrm triggers deliveries <trigger-id>
 ## Command reference
 
 ```text
-zwrm agent [type] [instance] — Manage agents and their workspaces
-      --cmd string        Override default command (e.g., "aider")
-      --instance string   Named instance (e.g., work, personal) (default "default")
-      --size string       VM size preset (default: the agent's stored size; performance-2x for a new agent)
-      --template string   Agent template (registry ID or github.com/user/repo)
+zwrm agent — Manage agents and their workspaces
 
 zwrm agent budget [instance] — Show or set an agent's daily spend/run caps
       --daily-usd float   Daily spend cap in USD (0 = unlimited)
       --max-runs int      Daily run-count cap (0 = unlimited)
+
+zwrm agent connect <agent-ref> — Open an agent's configured process
 
 zwrm agent connectors — Manage an agent's MCP connectors (gateway virtual servers)
 
@@ -116,12 +117,17 @@ zwrm agent connectors list <agent> — List the virtual servers attached to an a
 
 zwrm agent connectors verify <agent> <server> — Live-test a connector (initialize → tools/list against its upstream)
 
+zwrm agent create <name> — Create an agent definition without booting a VM
+      --runtime string    Agent runtime: zwrm, claude, or codex
+      --size string       VM size preset (default: performance-2x)
+      --template string   Agent template (registry ID or github.com/user/repo)
+
 zwrm agent delete [instance] — Delete an agent entirely (VM, volume, and record)
   -f, --force   Skip confirmation prompt
 
 zwrm agent destroy [instance] — Destroy a running agent VM (preserves volume)
 
-zwrm agent list — List all agent instances across all organizations
+zwrm agent list — List agents across all organizations
 
 zwrm agent logs [instance] — Show activity logs for an agent
       --limit int   Maximum number of log entries (default 50)
@@ -146,7 +152,7 @@ zwrm agent resize [instance] — Resize an agent's persistent volume
 zwrm agent run — Start an agent run (a prompt on one of your agents)
       --agent string       Run on this agent (instance name or agent ID) (required)
       --effort string      Reasoning effort: low|medium|high|xhigh|max (default: agent default)
-      --model string       Model, harness-specific: opus/sonnet for claude, catalog aliases for pi and codex (default: agent default)
+      --model string       Model, runtime-specific: opus/sonnet for claude, catalog aliases for zwrm and codex (default: agent default)
       --prompt string      Task prompt for the agent (required)
       --session string     Session continuity key: same key = continue that workspace's context; empty = fresh workspace per run
       --size string        VM size preset for this run's VM, e.g. performance-2x (default: agent default)
@@ -156,7 +162,7 @@ zwrm agent run cancel <run-id> — Cancel an agent run
 
 zwrm agent run continue <run-id> — Continue a finished run's conversation with a follow-up run
       --effort string      Reasoning effort (default: the run being continued)
-      --model string       Model, harness-specific: opus/sonnet for claude, catalog aliases for pi and codex (default: the run being continued)
+      --model string       Model, runtime-specific: opus/sonnet for claude, catalog aliases for zwrm and codex (default: the run being continued)
       --prompt string      Follow-up prompt (required)
       --size string        VM size preset (default: the run being continued)
       --timeout duration   Hard run timeout, e.g. 30m (0 = server default)
@@ -190,13 +196,15 @@ zwrm agent skills enable <agent> <skill> — Toggle a skill for an agent (live-s
 
 zwrm agent skills list <agent> — List the agent's skill states
 
+zwrm agent ssh <agent-ref> — Open a raw shell in an agent's workspace VM
+
 zwrm agent update <instance-or-id> — Update an agent's defaults (size, model, effort, instructions, budget, TTL, scopes)
       --allowed-scopes strings   Boot-token capabilities (comma-separated resource:action, e.g. apps:read,deploy,secrets:read,secrets:write,postgres:read,postgres:write,volumes:read,volumes:write,routes:write,logs:read,skills:read,skills:write,memories:read,memories:write,schedules:read,schedules:write,agents:read,triggers:read,triggers:write,mcp:read,mcp:write,connectors:read,connectors:write,ssh,scale,destroy,identity); empty resets to default
       --daily-budget float       Daily spend cap in USD (0 = unlimited)
       --effort string            Default reasoning effort: low|medium|high|xhigh|max
       --instructions string      Per-agent system-prompt append
       --max-runs-per-day int     Daily run cap (0 = unlimited)
-      --model string             Default model (harness-specific: opus/sonnet for claude, catalog aliases for pi and codex)
+      --model string             Default model (runtime-specific: opus/sonnet for claude, catalog aliases for zwrm and codex)
       --size string              VM size preset (e.g. performance-2x)
       --workspace-ttl duration   Keyed-workspace TTL, e.g. 720h (0 = never expire)
 
