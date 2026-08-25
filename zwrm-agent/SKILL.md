@@ -40,6 +40,7 @@ zwrm agent run cancel <run-id>
 - Run VMs are ephemeral; the agent's identity (memory, secrets, connectors) persists across runs.
 - `--session my-key` keeps a keyed workspace between runs so context and checkout survive; empty means a fresh workspace each run.
 - Per-run overrides: `--model`, `--effort`, `--size`, `--timeout`.
+- The zwrm runtime defaults to `auto`, with outage-aware routing across healthy compatible providers; use a concrete catalog alias when exact model identity matters.
 
 ## Agent configuration
 
@@ -152,7 +153,7 @@ zwrm agent resize [instance] — Resize an agent's persistent volume
 zwrm agent run — Start an agent run (a prompt on one of your agents)
       --agent string       Run on this agent (instance name or agent ID) (required)
       --effort string      Reasoning effort: low|medium|high|xhigh|max (default: agent default)
-      --model string       Model, runtime-specific: opus/sonnet for claude, catalog aliases for zwrm and codex (default: agent default)
+      --model string       Model, runtime-specific: opus/sonnet for claude, auto [the zwrm default] or a catalog alias for zwrm, catalog aliases for codex (default: agent default)
       --prompt string      Task prompt for the agent (required)
       --session string     Session continuity key: same key = continue that workspace's context; empty = fresh workspace per run
       --size string        VM size preset for this run's VM, e.g. performance-2x (default: agent default)
@@ -162,7 +163,7 @@ zwrm agent run cancel <run-id> — Cancel an agent run
 
 zwrm agent run continue <run-id> — Continue a finished run's conversation with a follow-up run
       --effort string      Reasoning effort (default: the run being continued)
-      --model string       Model, runtime-specific: opus/sonnet for claude, catalog aliases for zwrm and codex (default: the run being continued)
+      --model string       Model, runtime-specific: opus/sonnet for claude, auto or a catalog alias for zwrm, catalog aliases for codex (default: the run being continued)
       --prompt string      Follow-up prompt (required)
       --size string        VM size preset (default: the run being continued)
       --timeout duration   Hard run timeout, e.g. 30m (0 = server default)
@@ -204,7 +205,7 @@ zwrm agent update <instance-or-id> — Update an agent's defaults (size, model, 
       --effort string            Default reasoning effort: low|medium|high|xhigh|max
       --instructions string      Per-agent system-prompt append
       --max-runs-per-day int     Daily run cap (0 = unlimited)
-      --model string             Default model (runtime-specific: opus/sonnet for claude, catalog aliases for zwrm and codex)
+      --model string             Default model (runtime-specific: opus/sonnet for claude, auto [the zwrm default] or a catalog alias for zwrm, catalog aliases for codex)
       --size string              VM size preset (e.g. performance-2x)
       --workspace-ttl duration   Keyed-workspace TTL, e.g. 720h (0 = never expire)
 
