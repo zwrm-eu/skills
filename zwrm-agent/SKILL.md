@@ -202,6 +202,7 @@ zwrm agent ssh <agent-ref> — Open a raw shell in an agent's workspace VM
 zwrm agent update <instance-or-id> — Update an agent's defaults (size, model, effort, instructions, budget, TTL, scopes)
       --allowed-scopes strings   Boot-token capabilities (comma-separated resource:action, e.g. apps:read,deploy,secrets:read,secrets:write,postgres:read,postgres:write,volumes:read,volumes:write,routes:write,logs:read,skills:read,skills:write,memories:read,memories:write,schedules:read,schedules:write,agents:read,triggers:read,triggers:write,mcp:read,mcp:write,connectors:read,connectors:write,ssh,scale,destroy,identity); empty resets to default
       --daily-budget float       Daily spend cap in USD (0 = unlimited)
+      --disable-boot-token       Remove the boot token: revokes a live token now and mints no in-VM zwrm credential at later boots; --disable-boot-token=false restores it
       --effort string            Default reasoning effort: low|medium|high|xhigh|max
       --instructions string      Per-agent system-prompt append
       --max-runs-per-day int     Daily run cap (0 = unlimited)
