@@ -119,9 +119,10 @@ zwrm agent connectors list <agent> — List the virtual servers attached to an a
 zwrm agent connectors verify <agent> <server> — Live-test a connector (initialize → tools/list against its upstream)
 
 zwrm agent create <name> — Create an agent definition without booting a VM
-      --runtime string    Agent runtime: zwrm, claude, or codex
-      --size string       VM size preset (default: performance-2x)
-      --template string   Agent template (registry ID or github.com/user/repo)
+      --allowed-scopes strings   Boot-token capabilities (comma-separated resource:action); empty = the platform default set. A scoped login can only grant capabilities it holds itself
+      --runtime string           Agent runtime: zwrm, claude, or codex
+      --size string              VM size preset (default: performance-2x)
+      --template string          Agent template (registry ID or github.com/user/repo)
 
 zwrm agent delete [instance] — Delete an agent entirely (VM, volume, and record)
   -f, --force   Skip confirmation prompt
