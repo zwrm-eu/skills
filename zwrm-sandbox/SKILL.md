@@ -113,6 +113,7 @@ zwrm templates create <name> — Create a new agent template
       --bandwidth-mbps int              Default per-drive bandwidth cap (MiB/s)
       --burst-mbps int                  Default one-time bandwidth burst (MiB)
       --burst-ops int                   Default one-time ops burst
+      --context string                  Docker build context directory (default: current directory)
       --description string              Human-readable description of the template
       --disk-size-mb int                Writable disk quota for sandboxes from this template (MiB)
       --dockerfile string               Path to the Dockerfile for the template
