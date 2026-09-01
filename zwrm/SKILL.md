@@ -10,7 +10,7 @@ allowed-tools:
 
 Deploy and manage lightweight Firecracker microVMs: apps, sandboxes, managed Postgres, persistent volumes, secrets, coding agents, and an MCP gateway — all through one CLI.
 
-Generated from zwrm `v0.25.1`. `zwrm <command> --help` is always authoritative.
+Generated from zwrm `v0.25.2`. `zwrm <command> --help` is always authoritative.
 
 ## Prerequisites
 
@@ -122,6 +122,11 @@ zwrm org llm-provider add <name> — Register an external provider
       --model stringArray    model id served by the endpoint (repeatable; omit to discover)
 
 zwrm org llm-provider disable <name> — Disable a provider's models
+
+zwrm org llm-provider discover [name] — List the models an endpoint advertises, without registering it
+      --api-key string       bearer API key; "-" reads it from stdin
+      --base-url string      endpoint to probe (omit when naming a registered provider)
+      --header stringArray   custom auth header "Name: value" (repeatable)
 
 zwrm org llm-provider enable <name> — Enable a provider's models
 
