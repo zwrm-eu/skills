@@ -10,7 +10,7 @@ allowed-tools:
 
 Deploy and manage lightweight Firecracker microVMs: apps, sandboxes, managed Postgres, persistent volumes, secrets, coding agents, and an MCP gateway — all through one CLI.
 
-Generated from zwrm `v0.25.0`. `zwrm <command> --help` is always authoritative.
+Generated from zwrm `v0.25.1`. `zwrm <command> --help` is always authoritative.
 
 ## Prerequisites
 
@@ -114,11 +114,12 @@ zwrm org list — List organizations
 zwrm org llm-provider — Manage external OpenAI-compatible model providers
 
 zwrm org llm-provider add <name> — Register an external provider
-      --allow-private       permit a private/internal address (host-admin only)
-      --api-key string      bearer API key; "-" reads it from stdin (omit for keyless endpoints)
-      --base-url string     OpenAI-compatible API root (required)
-      --eu-resident         self-declare the endpoint as EU-resident (label only)
-      --model stringArray   model id served by the endpoint (repeatable; omit to discover)
+      --allow-private        permit a private/internal address (host-admin only)
+      --api-key string       bearer API key; "-" reads it from stdin (omit for keyless endpoints)
+      --base-url string      OpenAI-compatible API root (required)
+      --eu-resident          self-declare the endpoint as EU-resident (label only)
+      --header stringArray   custom auth header "Name: value" (repeatable; e.g. Azure's api-key). Mutually exclusive with --api-key
+      --model stringArray    model id served by the endpoint (repeatable; omit to discover)
 
 zwrm org llm-provider disable <name> — Disable a provider's models
 
@@ -133,10 +134,11 @@ zwrm org llm-provider show <name> — Show one provider and its models
 zwrm org llm-provider sync <name> — Refresh the model list from the endpoint's /models listing
 
 zwrm org llm-provider update <name> — Update a provider's URL, API key, or EU label
-      --api-key string    new bearer API key; "-" reads it from stdin
-      --base-url string   new OpenAI-compatible API root
-      --clear-api-key     remove the stored key (endpoint becomes keyless)
-      --eu-resident       self-declared EU-resident label
+      --api-key string       new bearer API key; "-" reads it from stdin
+      --base-url string      new OpenAI-compatible API root
+      --clear-api-key        remove the stored credential (endpoint becomes keyless)
+      --eu-resident          self-declared EU-resident label
+      --header stringArray   replace the custom auth headers with "Name: value" (repeatable)
 
 zwrm org secrets — Manage organization-wide secrets
 
