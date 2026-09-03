@@ -10,7 +10,7 @@ allowed-tools:
 
 Deploy and manage lightweight Firecracker microVMs: apps, sandboxes, managed Postgres, persistent volumes, secrets, coding agents, and an MCP gateway — all through one CLI.
 
-Generated from zwrm `v0.27.12`. `zwrm <command> --help` is always authoritative.
+Generated from zwrm `v0.27.13`. `zwrm <command> --help` is always authoritative.
 
 ## Prerequisites
 
