@@ -97,6 +97,8 @@ zwrm postgres restore <name> — Restore a database from backup
       --pitr string     Point-in-time recovery target (RFC3339)
       --size string     Size preset override (small, medium, large)
 
+zwrm postgres restore status <restore-id> — Get restore status
+
 zwrm postgres scale <name> <count> — Scale PostgreSQL read replicas
 
 zwrm postgres start <name> — Start a stopped PostgreSQL database
