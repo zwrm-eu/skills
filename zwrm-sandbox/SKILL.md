@@ -88,6 +88,9 @@ zwrm sandbox keepalive <id> — Extend a sandbox's lifetime
 zwrm sandbox list — List sandboxes
       --status string   Filter by status (running, creating, suspended, destroyed)
 
+zwrm sandbox rm <id> <remote-path> — Remove a file from a sandbox
+  -r, --recursive   Remove a directory and its contents
+
 zwrm sandbox run -- <command...> — Create a sandbox, run a command, and destroy it
       --egress-allow-cidr stringArray   Allow outbound traffic to this CIDR (can be repeated; implies --egress-mode deny_all)
       --egress-allow-port stringArray   Restrict allow_cidrs to this destination TCP port (can be repeated)

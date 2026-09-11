@@ -129,6 +129,14 @@ zwrm agent delete [instance] — Delete an agent entirely (VM, volume, and recor
 
 zwrm agent destroy [instance] — Destroy a running agent VM (preserves volume)
 
+zwrm agent files — Browse and remove files in an agent workspace
+      --workspace string   Workspace id or key (default "default")
+
+zwrm agent files ls <instance> [path] — List a workspace directory
+
+zwrm agent files rm <instance> <path> — Remove a workspace file
+  -r, --recursive   Remove a directory and its contents
+
 zwrm agent list — List agents across all organizations
 
 zwrm agent logs [instance] — Show activity logs for an agent
