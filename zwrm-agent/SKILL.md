@@ -76,9 +76,12 @@ zwrm agent skills enable my-project <skill>       # live-syncs running workspace
 zwrm schedules create nightly-triage --agent my-project \
   --cron "0 6 * * *" --prompt "Triage new GitHub issues; comment on each"
 zwrm schedules list
+zwrm schedules update <schedule-id> --cron "0 6 * * 1-5"
 zwrm schedules firings <schedule-id>
 zwrm schedules pause <schedule-id>
 ```
+
+Change a schedule with `update`. Deleting and recreating it gives it a new id and drops its session key, tags and firing log.
 
 ## Triggers (external events → runs)
 
@@ -87,10 +90,13 @@ Triggers give you a webhook URL; each delivery starts a run:
 ```bash
 zwrm triggers create sentry-alerts --default-agent my-project \
   --instruction "Investigate this Sentry alert and open an issue if real"
+zwrm triggers update <trigger-id> --instruction "Investigate and link the related issue"
 zwrm triggers deliveries <trigger-id>
 ```
 
 `--match` gates deliveries, `--routes` picks agents per payload, `--session-key-path` keys workspace continuity on a payload field, `--secret` imports a provider-minted signing secret (Linear, Shopify, Sentry).
+
+Change a trigger with `update`. A recreated trigger gets a new hook URL and secret, so the sender keeps posting to the old one.
 
 ## Command reference
 
@@ -242,6 +248,14 @@ zwrm schedules pause <schedule-id> — Pause or resume a schedule (resume never 
 
 zwrm schedules resume <schedule-id> — Pause or resume a schedule (resume never catch-up-fires)
 
+zwrm schedules update <schedule-id> — Change a schedule in place (keeps its id, session key, tags and firing log)
+      --clear-metadata         Remove all tags
+      --cron string            New 5-field cron in UTC (e.g. '0 9 * * 1-5') or @hourly/@daily/@weekly/@monthly
+      --metadata stringArray   Replace all tags with these key=value pairs (repeatable)
+      --name string            New name
+      --prompt string          New prompt for each run
+      --session-key string     New workspace continuity key ("" = fresh workspace per run)
+
 zwrm triggers — Manage inbound triggers (external events → agent runs)
 
 zwrm triggers create <name> — Create an inbound trigger
@@ -265,6 +279,17 @@ zwrm triggers list — List inbound triggers
 zwrm triggers pause <trigger-id> — Pause or resume a trigger
 
 zwrm triggers resume <trigger-id> — Pause or resume a trigger
+
+zwrm triggers update <trigger-id> — Change a trigger in place (keeps its hook URL, secret and delivery log)
+      --clear-default-agent       Remove the catch-all agent
+      --default-agent string      New catch-all agent (id or name) when no route matches
+      --instruction string        New task for the agent on each delivery
+      --match string              Replace the match-condition gate, as JSON: [{path,op,value?}] ("" = remove it)
+      --message-template string   Render {dot.path} tokens over the body ("" = raw body)
+      --name string               New name
+      --rate-per-day int          Daily delivery cap (0 = unlimited)
+      --routes string             Replace the routing rules, as JSON: [{agent_id,when?}] ("" = remove them)
+      --session-key-path string   Dot-path whose value keys session continuity ("" = one-shot)
 
 zwrm skills — Manage the skill library (validated bundles agents can enable)
 
