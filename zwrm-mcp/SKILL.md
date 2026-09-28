@@ -115,6 +115,7 @@ zwrm mcp upstream add <name> <url> — Register an upstream MCP server
       --allow-private                Allow private/internal addresses (host-admin only)
       --bearer-token string          Bearer token sent to the upstream
       --header stringArray           Custom auth header "Name: value" (repeatable)
+      --identity-policy string       Whose account a member's agent chat uses with --oauth: user (default), user_then_agent, or agent (operator role)
       --oauth                        Per-user OAuth sign-in (each member connects their own account)
       --oauth-client-id string       OAuth client ID (client_credentials flow, or a pre-registered app with --oauth)
       --oauth-client-secret string   OAuth client secret (client_credentials flow, or a pre-registered app with --oauth)
@@ -133,6 +134,9 @@ zwrm mcp upstream rm <name> — Remove an upstream
 zwrm mcp upstream sync <name> — Re-sync an upstream's tool catalog
 
 zwrm mcp upstream tools <name> — List an upstream's synced tool catalog
+
+zwrm mcp upstream update <name> — Change an upstream's settings
+      --identity-policy string   user, user_then_agent, or agent
 ```
 
 ## Tips
