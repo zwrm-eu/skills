@@ -223,7 +223,7 @@ zwrm agent update <instance-or-id> — Update an agent's defaults (size, model, 
       --max-runs-per-day int     Daily run cap (0 = unlimited)
       --model string             Default model (runtime-specific: opus/sonnet/fable for claude, auto [the zwrm default] or a catalog alias for zwrm, catalog aliases for codex)
       --size string              VM size preset (e.g. performance-2x)
-      --workspace-ttl duration   Keyed-workspace TTL, e.g. 720h (0 = never expire)
+      --workspace-ttl duration   Keyed-workspace TTL, e.g. 168h (default 7 days; 0 = never expire)
 
 zwrm schedules — Manage scheduled agent runs (cron → agent runs)
 
