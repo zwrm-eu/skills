@@ -135,6 +135,18 @@ zwrm agent delete [instance] — Delete an agent entirely (VM, volume, and recor
 
 zwrm agent destroy [instance] — Destroy a running agent VM (preserves volume)
 
+zwrm agent egress [instance] — Show or set where an agent may connect
+
+zwrm agent egress clear [instance] — Remove an agent's own network policy
+
+zwrm agent egress set [instance] — Replace an agent's own network policy
+      --allow stringArray        Allowed site, with its subdomains (repeatable)
+      --allow-cidr stringArray   Allowed IP address or CIDR (repeatable)
+      --allow-port ints          Limit --allow-cidr to these TCP ports
+      --block stringArray        Blocked site, with its subdomains (repeatable)
+      --block-cidr stringArray   Blocked IP address or CIDR (repeatable)
+      --mode string              deny_all (allow list) or allow_all (block list)
+
 zwrm agent files — Browse and remove files in an agent workspace
       --workspace string   Workspace id or key (default "default")
 

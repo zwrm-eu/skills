@@ -57,21 +57,23 @@ Templates can bake in a default egress policy so every sandbox created from them
 zwrm sandbox — Manage sandboxes
 
 zwrm sandbox create — Create a new sandbox
-      --bandwidth-mbps int              Override per-drive bandwidth cap (MiB/s)
-      --burst-mbps int                  Override one-time bandwidth burst (MiB)
-      --burst-ops int                   Override one-time ops burst
-      --disk-size-mb int                Override the template's writable disk quota (MiB)
-      --egress-allow-cidr stringArray   Allow outbound traffic to this CIDR (can be repeated; implies --egress-mode deny_all)
-      --egress-allow-port stringArray   Restrict allow_cidrs to this destination TCP port (can be repeated)
-      --egress-deny-cidr stringArray    Explicitly deny outbound traffic to this CIDR (can be repeated)
-      --egress-mode string              Egress firewall mode: 'allow_all' or 'deny_all' (default: cluster setting)
-  -e, --env stringArray                 Environment variable in KEY=VALUE format (can be repeated)
-      --idle-timeout string             Idle timeout before auto-suspend (persistent mode only) (default "10m")
-      --ops-per-sec int                 Override per-drive IOPS cap
-      --persistent                      Create a persistent sandbox (auto-suspends when idle)
-  -s, --size string                     VM size preset (default "shared-cpu-1x")
-  -t, --template string                 Template name or ID (required)
-      --timeout string                  Sandbox lifetime duration (e.g. 5m, 1h) (default "5m")
+      --bandwidth-mbps int                Override per-drive bandwidth cap (MiB/s)
+      --burst-mbps int                    Override one-time bandwidth burst (MiB)
+      --burst-ops int                     Override one-time ops burst
+      --disk-size-mb int                  Override the template's writable disk quota (MiB)
+      --egress-allow-cidr stringArray     Allow outbound traffic to this CIDR (can be repeated; implies --egress-mode deny_all)
+      --egress-allow-domain stringArray   Allowed site, with its subdomains, on ports 80/443 (can be repeated; implies --egress-mode deny_all)
+      --egress-allow-port stringArray     Restrict allow_cidrs to this destination TCP port (can be repeated)
+      --egress-deny-cidr stringArray      Explicitly deny outbound traffic to this CIDR (can be repeated)
+      --egress-deny-domain stringArray    Blocked site, with its subdomains (can be repeated)
+      --egress-mode string                Egress firewall mode: 'allow_all' or 'deny_all' (default: cluster setting)
+  -e, --env stringArray                   Environment variable in KEY=VALUE format (can be repeated)
+      --idle-timeout string               Idle timeout before auto-suspend (persistent mode only) (default "10m")
+      --ops-per-sec int                   Override per-drive IOPS cap
+      --persistent                        Create a persistent sandbox (auto-suspends when idle)
+  -s, --size string                       VM size preset (default "shared-cpu-1x")
+  -t, --template string                   Template name or ID (required)
+      --timeout string                    Sandbox lifetime duration (e.g. 5m, 1h) (default "5m")
 
 zwrm sandbox destroy <id> — Destroy a sandbox
   -f, --force   Skip confirmation prompt
@@ -92,17 +94,19 @@ zwrm sandbox rm <id> <remote-path> — Remove a file from a sandbox
   -r, --recursive   Remove a directory and its contents
 
 zwrm sandbox run -- <command...> — Create a sandbox, run a command, and destroy it
-      --egress-allow-cidr stringArray   Allow outbound traffic to this CIDR (can be repeated; implies --egress-mode deny_all)
-      --egress-allow-port stringArray   Restrict allow_cidrs to this destination TCP port (can be repeated)
-      --egress-deny-cidr stringArray    Explicitly deny outbound traffic to this CIDR (can be repeated)
-      --egress-mode string              Egress firewall mode: 'allow_all' or 'deny_all' (default: cluster setting)
-  -e, --env stringArray                 Environment variable in KEY=VALUE format (can be repeated)
-      --exec-timeout string             Command execution timeout (default "30s")
-  -s, --size string                     VM size preset (default "shared-cpu-1x")
-  -t, --template string                 Template name or ID (required)
-      --timeout string                  Sandbox lifetime duration (default "5m")
-      --wait-timeout string             Max time to wait for sandbox readiness (default "2m")
-      --workdir string                  Working directory inside the sandbox
+      --egress-allow-cidr stringArray     Allow outbound traffic to this CIDR (can be repeated; implies --egress-mode deny_all)
+      --egress-allow-domain stringArray   Allowed site, with its subdomains, on ports 80/443 (can be repeated; implies --egress-mode deny_all)
+      --egress-allow-port stringArray     Restrict allow_cidrs to this destination TCP port (can be repeated)
+      --egress-deny-cidr stringArray      Explicitly deny outbound traffic to this CIDR (can be repeated)
+      --egress-deny-domain stringArray    Blocked site, with its subdomains (can be repeated)
+      --egress-mode string                Egress firewall mode: 'allow_all' or 'deny_all' (default: cluster setting)
+  -e, --env stringArray                   Environment variable in KEY=VALUE format (can be repeated)
+      --exec-timeout string               Command execution timeout (default "30s")
+  -s, --size string                       VM size preset (default "shared-cpu-1x")
+  -t, --template string                   Template name or ID (required)
+      --timeout string                    Sandbox lifetime duration (default "5m")
+      --wait-timeout string               Max time to wait for sandbox readiness (default "2m")
+      --workdir string                    Working directory inside the sandbox
 
 zwrm sandbox status <id> — Show sandbox details
 
@@ -113,19 +117,21 @@ zwrm sandbox wake <id> — Wake a suspended sandbox
 zwrm templates — Manage agent templates
 
 zwrm templates create <name> — Create a new agent template
-      --bandwidth-mbps int              Default per-drive bandwidth cap (MiB/s)
-      --burst-mbps int                  Default one-time bandwidth burst (MiB)
-      --burst-ops int                   Default one-time ops burst
-      --context string                  Docker build context directory (default: current directory)
-      --description string              Human-readable description of the template
-      --disk-size-mb int                Writable disk quota for sandboxes from this template (MiB)
-      --dockerfile string               Path to the Dockerfile for the template
-      --egress-allow-cidr stringArray   Default allowed outbound CIDR (can be repeated; implies --egress-mode deny_all)
-      --egress-allow-port stringArray   Default destination TCP port restriction for allow_cidrs (can be repeated)
-      --egress-deny-cidr stringArray    Default denied outbound CIDR (can be repeated)
-      --egress-mode string              Default egress firewall mode for sandboxes from this template: 'allow_all' or 'deny_all'
-  -e, --env stringArray                 Default environment variable for sandboxes from this template, in KEY=VALUE format (can be repeated)
-      --ops-per-sec int                 Default per-drive IOPS cap
+      --bandwidth-mbps int                Default per-drive bandwidth cap (MiB/s)
+      --burst-mbps int                    Default one-time bandwidth burst (MiB)
+      --burst-ops int                     Default one-time ops burst
+      --context string                    Docker build context directory (default: current directory)
+      --description string                Human-readable description of the template
+      --disk-size-mb int                  Writable disk quota for sandboxes from this template (MiB)
+      --dockerfile string                 Path to the Dockerfile for the template
+      --egress-allow-cidr stringArray     Default allowed outbound CIDR (can be repeated; implies --egress-mode deny_all)
+      --egress-allow-domain stringArray   Default allowed site for sandboxes from this template, with its subdomains, on ports 80/443 (can be repeated; implies --egress-mode deny_all)
+      --egress-allow-port stringArray     Default destination TCP port restriction for allow_cidrs (can be repeated)
+      --egress-deny-cidr stringArray      Default denied outbound CIDR (can be repeated)
+      --egress-deny-domain stringArray    Default blocked site for sandboxes from this template, with its subdomains (can be repeated)
+      --egress-mode string                Default egress firewall mode for sandboxes from this template: 'allow_all' or 'deny_all'
+  -e, --env stringArray                   Default environment variable for sandboxes from this template, in KEY=VALUE format (can be repeated)
+      --ops-per-sec int                   Default per-drive IOPS cap
 
 zwrm templates delete <name> — Delete a template
   -f, --force   Skip confirmation prompt
