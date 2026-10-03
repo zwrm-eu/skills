@@ -10,7 +10,7 @@ allowed-tools:
 
 Deploy and manage lightweight Firecracker microVMs: apps, sandboxes, managed Postgres, persistent volumes, secrets, coding agents, and an MCP gateway — all through one CLI.
 
-Generated from zwrm `v0.30.3`. `zwrm <command> --help` is always authoritative.
+Generated from zwrm `v0.31.0`. `zwrm <command> --help` is always authoritative.
 
 ## Prerequisites
 
@@ -108,6 +108,18 @@ zwrm auth whoami — Show current authenticated user
 zwrm org — Manage organizations and org resources
 
 zwrm org create <name> — Create a new organization
+
+zwrm org egress — Show or set where the organization's agents may connect
+
+zwrm org egress clear — Remove the organization's network policy
+
+zwrm org egress set — Replace the organization's network policy
+      --allow stringArray        Allowed site, with its subdomains (repeatable)
+      --allow-cidr stringArray   Allowed IP address or CIDR (repeatable)
+      --allow-port ints          Limit --allow-cidr to these TCP ports
+      --block stringArray        Blocked site, with its subdomains (repeatable)
+      --block-cidr stringArray   Blocked IP address or CIDR (repeatable)
+      --mode string              deny_all (allow list) or allow_all (block list)
 
 zwrm org list — List organizations
 
