@@ -94,7 +94,7 @@ zwrm triggers update <trigger-id> --instruction "Investigate and link the relate
 zwrm triggers deliveries <trigger-id>
 ```
 
-`--match` gates deliveries, `--routes` picks agents per payload, `--session-key-path` keys workspace continuity on a payload field, `--secret` imports a provider-minted signing secret (Linear, Shopify, Sentry).
+`--match` gates deliveries, `--routes` picks agents per payload, `--session-key-path` keys workspace continuity on a payload field, `--secret` imports a provider-minted signing secret (Linear, Shopify, Sentry, Front).
 
 Change a trigger with `update`. A recreated trigger gets a new hook URL and secret, so the sender keeps posting to the old one.
 
@@ -278,7 +278,7 @@ zwrm triggers create <name> — Create an inbound trigger
       --no-secret                 Create a slug-gated trigger with no secret
       --rate-per-day int          Daily delivery cap (0 = unlimited)
       --routes string             Routing rules as JSON: [{agent_id,when?}]
-      --secret string             Import a provider-minted signing secret (Linear, Shopify, Sentry) instead of generating one
+      --secret string             Import a provider-minted signing secret (Linear, Shopify, Sentry, Front) instead of generating one
       --session-key-path string   Dot-path whose value keys session continuity (blank = one-shot)
 
 zwrm triggers delete <trigger-id> — Delete a trigger (and its delivery log)
