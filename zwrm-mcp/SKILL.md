@@ -47,6 +47,19 @@ zwrm mcp server create dev-tools \
 zwrm mcp server get dev-tools
 ```
 
+## Give an agent tools
+
+The short way: choose an agent's tools per integration, and which ask first. The platform keeps the virtual servers this needs.
+
+```bash
+zwrm agent tools set my-agent ms365 --all --ask-first send-mail   # everything; Send mail waits for a person
+zwrm agent tools set my-agent hubspot --tools search-objects,get-object
+zwrm agent tools list my-agent
+zwrm agent tools remove my-agent hubspot
+```
+
+An agent may add tools to its own ask-first list but never take one off. Compose and attach servers by hand (below) for anything finer.
+
 ## Attach to an agent
 
 An agent token needs `connectors:read` to list its own attachments and

@@ -48,6 +48,7 @@ zwrm agent run cancel <run-id>
 zwrm agent update my-project --model opus --effort high \
   --instructions "Prefer small PRs. Never force-push." \
   --size performance-2x
+zwrm agent update my-project --name "Hedi" --avatar owl   # what people see; the handle never changes
 zwrm agent budget my-project --daily-usd 20 --max-runs 50
 zwrm agent logs my-project
 
@@ -124,11 +125,17 @@ zwrm agent connectors list <agent> — List the virtual servers attached to an a
 
 zwrm agent connectors verify <agent> <server> — Live-test a connector (initialize → tools/list against its upstream)
 
-zwrm agent create <name> — Create an agent definition without booting a VM
+zwrm agent create [handle] — Create an agent definition without booting a VM
       --allowed-scopes strings   Boot-token capabilities (comma-separated resource:action); empty = the platform default set. A scoped login can only grant capabilities it holds itself
-      --runtime string           Agent runtime: zwrm, claude, or codex
+      --avatar string            Bird avatar: zwrm, woodpecker, eagle, owl, toucan, cardinal, hummingbird, duck, parrot, heron (default: one the client picks)
+      --locale string            With --preset: language of the instructions and routines, en or de (default en)
+      --name string              Display name people see, up to 40 characters (default: the handle, or the preset's name)
+      --preset string            Start from a preset (see 'zwrm agent presets'), e.g. finance
+      --routines strings         With --preset: routine ids to schedule (default the preset's default routines; pass "" for none)
+      --runtime string           Agent runtime: zwrm, claude, or codex (with --preset, replaces the preset's)
       --size string              VM size preset (default: performance-2x, or shared-cpu-4x on plans limited to shared sizes such as trials)
       --template string          Agent template (registry ID or github.com/user/repo)
+      --timezone string          With --preset: IANA time zone the routines' times are in (default Europe/Berlin)
 
 zwrm agent delete [instance] — Delete an agent entirely (VM, volume, and record)
   -f, --force   Skip confirmation prompt
@@ -173,6 +180,9 @@ zwrm agent memory save <agent> <slug> — Create or replace a memory entry (body
       --kind string          Optional category: user | project | reference | feedback
 
 zwrm agent memory show <agent> <slug> — Print one memory entry's body
+
+zwrm agent presets — List the presets an agent can start from
+      --locale string   Language: en or de (default en)
 
 zwrm agent resize [instance] — Resize an agent's persistent volume
       --volume string   New volume size (e.g., 20GB, 500MB)
@@ -226,14 +236,27 @@ zwrm agent skills list <agent> — List the agent's skill states
 
 zwrm agent ssh <agent-ref> — Open a raw shell in an agent's workspace VM
 
-zwrm agent update <instance-or-id> — Update an agent's defaults (size, model, effort, instructions, budget, TTL, scopes)
+zwrm agent tools — Choose an agent's tools per integration, and which ask first
+
+zwrm agent tools list <agent> — Show an agent's tools per integration
+
+zwrm agent tools remove <agent> <integration> — Take an integration's tools away from an agent
+
+zwrm agent tools set <agent> <integration> — Set what an agent may use of an integration
+      --all                 Every tool the integration has
+      --ask-first strings   Tools that wait for a person's approval, comma-separated
+      --tools strings       Tool names, comma-separated
+
+zwrm agent update <instance-or-id> — Update an agent's name, avatar and defaults (size, model, effort, instructions, budget, TTL, scopes)
       --allowed-scopes strings   Boot-token capabilities (comma-separated resource:action, e.g. apps:read,deploy,secrets:read,secrets:write,postgres:read,postgres:write,volumes:read,volumes:write,routes:write,logs:read,skills:read,skills:write,memories:read,memories:write,schedules:read,schedules:write,agents:read,agents:write,triggers:read,triggers:write,mcp:read,mcp:write,connectors:read,connectors:write,sessions:shell,ssh,scale,destroy,identity); empty resets to default
+      --avatar string            Bird avatar: zwrm, woodpecker, eagle, owl, toucan, cardinal, hummingbird, duck, parrot, heron; "" lets the client pick
       --daily-budget float       Daily spend cap in USD (0 = unlimited)
       --disable-boot-token       Remove the boot token: revokes a live token now and mints no in-VM zwrm credential at later boots; --disable-boot-token=false restores it
       --effort string            Default reasoning effort: low|medium|high|xhigh|max
       --instructions string      Per-agent system-prompt append
       --max-runs-per-day int     Daily run cap (0 = unlimited)
       --model string             Default model (runtime-specific: opus/sonnet/fable for claude, auto [the zwrm default] or a catalog alias for zwrm, catalog aliases for codex)
+      --name string              Display name people see, up to 40 characters; "" clears it (the handle shows)
       --size string              VM size preset (e.g. performance-2x)
       --workspace-ttl duration   Keyed-workspace TTL, e.g. 168h (default 7 days; 0 = never expire)
 
@@ -241,7 +264,7 @@ zwrm schedules — Manage scheduled agent runs (cron → agent runs)
 
 zwrm schedules create <name> — Create a scheduled run
       --agent string           Agent to run (id or name) — required
-      --cron string            Standard 5-field cron in UTC (e.g. '0 9 * * 1-5') or @hourly/@daily/@weekly/@monthly — required
+      --cron string            Standard 5-field cron in UTC (e.g. '0 9 * * 1-5'), with CRON_TZ=<zone> in front for a time zone, or @hourly/@daily/@weekly/@monthly — required
       --metadata stringArray   Tag the schedule with key=value (repeatable), e.g. --metadata creator=alice
       --paused                 Create the schedule disabled
       --prompt string          The prompt for each run — required
