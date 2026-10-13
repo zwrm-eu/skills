@@ -112,6 +112,7 @@ zwrm mcp server add-upstream <server> — Add upstreams to an existing virtual s
 
 zwrm mcp server create <name> — Create a virtual server from upstream tool selections
       --description string     Description (served as MCP instructions)
+      --share                  Share it with the organization at once (default: private to you; its upstreams must be shared)
       --upstream stringArray   Upstream selection "name" or "name:tool1,tool2" (repeatable)
 
 zwrm mcp server get <name> — Show a virtual server and its exposed tools
@@ -122,19 +123,24 @@ zwrm mcp server remove-upstream <server> <upstream>... — Remove upstreams from
 
 zwrm mcp server rm <name> — Remove a virtual server
 
+zwrm mcp server share <name> — Share the server with the organization
+
+zwrm mcp server unshare <name> — Take the server back private
+
 zwrm mcp upstream — Manage the org's registered upstream MCP servers
 
 zwrm mcp upstream add <name> <url> — Register an upstream MCP server
       --allow-private                Allow private/internal addresses (host-admin only)
       --bearer-token string          Bearer token sent to the upstream
       --header stringArray           Custom auth header "Name: value" (repeatable)
-      --identity-policy string       Whose account a member's agent chat uses with --oauth: user (default), user_then_agent, or agent (operator role)
+      --identity-policy string       Whose account a member's agent chat uses with --oauth: user (default), user_then_agent, or agent (your own connection, or the operator role)
       --oauth                        Per-user OAuth sign-in (each member connects their own account)
       --oauth-client-id string       OAuth client ID (client_credentials flow, or a pre-registered app with --oauth)
       --oauth-client-secret string   OAuth client secret (client_credentials flow, or a pre-registered app with --oauth)
       --oauth-issuer string          Pin the authorization server for --oauth (e.g. https://login.microsoftonline.com/<tenant>/v2.0); requires --oauth-client-id
       --oauth-scope string           Optional space-separated OAuth scopes
       --oauth-token-url string       OAuth token endpoint URL (client_credentials flow)
+      --share                        Share it with the organization at once (default: private to you)
       --transport string             Upstream transport: streamable-http (default) or sse
 
 zwrm mcp upstream grants <name> — List connected accounts on a per-user OAuth upstream
@@ -144,9 +150,13 @@ zwrm mcp upstream list — List registered upstreams
 zwrm mcp upstream rm <name> — Remove an upstream
       --force   Remove even when virtual servers reference this upstream
 
+zwrm mcp upstream share <name> — Share the upstream with the organization
+
 zwrm mcp upstream sync <name> — Re-sync an upstream's tool catalog
 
 zwrm mcp upstream tools <name> — List an upstream's synced tool catalog
+
+zwrm mcp upstream unshare <name> — Take the upstream back private
 
 zwrm mcp upstream update <name> — Change an upstream's settings
       --identity-policy string   user, user_then_agent, or agent

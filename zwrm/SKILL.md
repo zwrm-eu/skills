@@ -10,7 +10,7 @@ allowed-tools:
 
 Deploy and manage lightweight Firecracker microVMs: apps, sandboxes, managed Postgres, persistent volumes, secrets, coding agents, and an MCP gateway — all through one CLI.
 
-Generated from zwrm `v0.32.0`. `zwrm <command> --help` is always authoritative.
+Generated from zwrm `v0.33.0`. `zwrm <command> --help` is always authoritative.
 
 ## Prerequisites
 
@@ -49,6 +49,7 @@ zwrm deploy     Deploy an application
 zwrm destroy    Destroy machines or entire application
 zwrm host       Manage hosts in the cluster
 zwrm init       Initialize a new zwrm.toml configuration
+zwrm keys       Manage your own keys and subscriptions
 zwrm logs       View VM console logs
 zwrm mcp        Run an MCP server exposing autonomous agent runs (stdio)
 zwrm org        Manage organizations and org resources
@@ -95,6 +96,7 @@ zwrm auth tokens — Manage API tokens
 
 zwrm auth tokens create — Create a new API token (optionally capability-scoped)
       --expiry string    Token expiry duration (e.g. '8760h' for 1 year, empty for no expiry)
+      --integration      An app uses the token for many people: what it sends into a shared chat names nobody, not you
       --name string      Token name (e.g. 'github-actions')
       --org string       Organization id or slug the scoped token is bound to (default: your target org)
       --scopes strings   Capability set (comma-separated resource:action, e.g. apps:read,deploy,logs:read); empty = unrestricted token
@@ -103,11 +105,24 @@ zwrm auth tokens list — List API tokens
 
 zwrm auth tokens revoke <token-id> — Revoke an API token
 
+zwrm auth tokens update <token-id> — Change an API token
+      --integration   An app uses the token for many people (--integration=false clears it)
+
 zwrm auth whoami — Show current authenticated user
 
 zwrm org — Manage organizations and org resources
 
 zwrm org create <name> — Create a new organization
+
+zwrm org departures — Members who left, and what they still own (org admins)
+
+zwrm org departures delete <user-id> — Delete now what a member who left still owns privately
+      --yes   confirm the deletion
+
+zwrm org departures list — List members who left, with what they still own
+
+zwrm org departures reassign <user-id> --to <member-user-id> — Hand what a member who left still owns to another member
+      --to string   the member who takes over (user id)
 
 zwrm org egress — Show or set where the organization's agents may connect
 
@@ -124,6 +139,7 @@ zwrm org egress set — Replace the organization's network policy
 zwrm org list — List organizations
 
 zwrm org llm-provider — Manage external OpenAI-compatible model providers
+      --mine   Manage your own providers, for your own private chats and runs
 
 zwrm org llm-provider add <name> — Register an external provider
       --allow-private        permit a private/internal address (host-admin only)
@@ -162,10 +178,15 @@ zwrm org secrets — Manage organization-wide secrets
 zwrm org secrets add --from-file <path> — Add organization secrets from a file
       --from-file string   Path to .env file
 
+zwrm org secrets agents <name> [--all | <agent>...] — Choose which agents get an organization secret
+      --all   Give the secret to every agent
+
 zwrm org secrets list — List organization secrets
 
 zwrm org secrets set <name> [value] — Set an organization secret
-      --stdin   Read the secret value from standard input instead of argv
+      --agents strings   Give the secret only to these agents (ids or names)
+      --all-agents       Give the secret to every agent of the organization
+      --stdin            Read the secret value from standard input instead of argv
 
 zwrm org secrets unset <name> — Remove an organization secret
 ```
