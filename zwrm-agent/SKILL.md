@@ -108,6 +108,12 @@ zwrm agent budget [instance] — Show or set an agent's daily spend/run caps
       --daily-usd float   Daily spend cap in USD (0 = unlimited)
       --max-runs int      Daily run-count cap (0 = unlimited)
 
+zwrm agent chat — Share a chat with the organization, or take it back
+
+zwrm agent chat share <agent> <chat> — Share a chat (its key or workspace id) with the organization
+
+zwrm agent chat unshare <agent> <chat> — Take a shared chat back private
+
 zwrm agent connect <agent-ref> — Open an agent's configured process
 
 zwrm agent connectors — Manage an agent's MCP connectors (gateway virtual servers)
@@ -168,6 +174,11 @@ zwrm agent logs [instance] — Show activity logs for an agent
       --limit int   Maximum number of log entries (default 50)
 
 zwrm agent memory — Curate an agent's durable memory entries
+      --mine           Act on your own memories on the agent
+      --owner string   Act on this member's own memories (org admins: show and delete)
+
+zwrm agent memory copy <agent> <memory-id> — Copy a memory you can see into the agent's memories or your own on it
+      --to string   Where the copy goes: own (yours) or agent (the agent's, operators only) (default "own")
 
 zwrm agent memory delete <agent> <slug> — Delete a memory entry
 
@@ -179,7 +190,14 @@ zwrm agent memory save <agent> <slug> — Create or replace a memory entry (body
       --file string          Read the body from a file
       --kind string          Optional category: user | project | reference | feedback
 
+zwrm agent memory share <agent> <slug> — Share a memory entry with the organization: every member and agent can look it up
+
+zwrm agent memory shared — List the memories members shared with the organization
+      --query string   Words to look for in the slug, description or body
+
 zwrm agent memory show <agent> <slug> — Print one memory entry's body
+
+zwrm agent memory unshare <agent> <slug> — Take a shared memory entry back
 
 zwrm agent presets — List the presets an agent can start from
       --locale string   Language: en or de (default en)
@@ -226,7 +244,11 @@ zwrm agent secrets set <name> [value] — Set a secret for an agent
 zwrm agent secrets unset <name> — Remove a secret from an agent
       --instance string   Agent instance name (default "default")
 
+zwrm agent share <agent> — Share an agent with the organization
+      --yes   Share it even though some of its connectors act as one account for every member
+
 zwrm agent skills — Manage an agent's enabled skills
+      --mine   Switch the skill for your own private chats with the agent only
 
 zwrm agent skills disable <agent> <skill> — Toggle a skill for an agent (live-syncs running workspaces)
 
@@ -246,6 +268,8 @@ zwrm agent tools set <agent> <integration> — Set what an agent may use of an i
       --all                 Every tool the integration has
       --ask-first strings   Tools that wait for a person's approval, comma-separated
       --tools strings       Tool names, comma-separated
+
+zwrm agent unshare <agent> — Take a shared agent back private
 
 zwrm agent update <instance-or-id> — Update an agent's name, avatar and defaults (size, model, effort, instructions, budget, TTL, scopes)
       --allowed-scopes strings   Boot-token capabilities (comma-separated resource:action, e.g. apps:read,deploy,secrets:read,secrets:write,postgres:read,postgres:write,volumes:read,volumes:write,routes:write,logs:read,skills:read,skills:write,memories:read,memories:write,schedules:read,schedules:write,agents:read,agents:write,triggers:read,triggers:write,mcp:read,mcp:write,connectors:read,connectors:write,sessions:shell,ssh,scale,destroy,identity); empty resets to default
@@ -269,6 +293,7 @@ zwrm schedules create <name> — Create a scheduled run
       --paused                 Create the schedule disabled
       --prompt string          The prompt for each run — required
       --session-key string     Workspace continuity key (blank = fresh workspace per run)
+      --share                  Share it with the organization at once (it is private to you otherwise, unless --session-key names a shared chat)
 
 zwrm schedules delete <schedule-id> — Delete a schedule (and its firing log)
 
@@ -283,6 +308,10 @@ zwrm schedules pause <schedule-id> — Pause or resume a schedule (resume never 
 
 zwrm schedules resume <schedule-id> — Pause or resume a schedule (resume never catch-up-fires)
 
+zwrm schedules share <schedule-id> — Share a schedule of yours with the organization
+
+zwrm schedules unshare <schedule-id> — Make a schedule private to you again
+
 zwrm schedules update <schedule-id> — Change a schedule in place (keeps its id, session key, tags and firing log)
       --clear-metadata         Remove all tags
       --cron string            New 5-field cron in UTC (e.g. '0 9 * * 1-5') or @hourly/@daily/@weekly/@monthly
@@ -290,6 +319,7 @@ zwrm schedules update <schedule-id> — Change a schedule in place (keeps its id
       --name string            New name
       --prompt string          New prompt for each run
       --session-key string     New workspace continuity key ("" = fresh workspace per run)
+      --visibility string      Who sees it: "private" (you and the org's admins) or "org"; needed when a new --session-key changes it
 
 zwrm triggers — Manage inbound triggers (external events → agent runs)
 
@@ -303,6 +333,7 @@ zwrm triggers create <name> — Create an inbound trigger
       --routes string             Routing rules as JSON: [{agent_id,when?}]
       --secret string             Import a provider-minted signing secret (Linear, Shopify, Sentry, Front) instead of generating one
       --session-key-path string   Dot-path whose value keys session continuity (blank = one-shot)
+      --share                     Share it with the organization at once (it is private to you otherwise: its deliveries and runs are yours)
 
 zwrm triggers delete <trigger-id> — Delete a trigger (and its delivery log)
 
@@ -314,6 +345,10 @@ zwrm triggers list — List inbound triggers
 zwrm triggers pause <trigger-id> — Pause or resume a trigger
 
 zwrm triggers resume <trigger-id> — Pause or resume a trigger
+
+zwrm triggers share <trigger-id> — Share a trigger of yours with the organization
+
+zwrm triggers unshare <trigger-id> — Make a trigger private to you again
 
 zwrm triggers update <trigger-id> — Change a trigger in place (keeps its hook URL, secret and delivery log)
       --clear-default-agent       Remove the catch-all agent
@@ -328,13 +363,18 @@ zwrm triggers update <trigger-id> — Change a trigger in place (keeps its hook 
 
 zwrm skills — Manage the skill library (validated bundles agents can enable)
 
-zwrm skills create <slug> — Create a skill (upload a bundle to activate it)
+zwrm skills create <slug> — Create a skill, yours and private unless --share (upload a bundle to activate it)
       --description string   When-to-use description shown to agents and humans
       --name string          Display name (default: the slug)
+      --share                Share it with the organization right away
 
 zwrm skills delete <skill> — Delete a skill (removes it from agents and live workspaces)
 
 zwrm skills list — List the skill library
+
+zwrm skills share <skill> — Share a skill with the organization: every member and agent can use it
+
+zwrm skills unshare <skill> — Take a shared skill back: only you can use it again
 
 zwrm skills upload <skill> <bundle.zip> — Upload a bundle as the skill's next version
 ```
