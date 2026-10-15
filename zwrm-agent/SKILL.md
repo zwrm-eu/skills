@@ -255,7 +255,7 @@ zwrm agent share <agent> — Share an agent with the organization
       --yes   Share it even though some of its connectors act as one account for every member
 
 zwrm agent skills — Manage an agent's enabled skills
-      --mine   Switch the skill for your own private chats with the agent only
+      --mine   Switch the skill only for your own private chats with the agent, and chats you share with --skills
 
 zwrm agent skills disable <agent> <skill> — Toggle a skill for an agent (live-syncs running workspaces)
 
