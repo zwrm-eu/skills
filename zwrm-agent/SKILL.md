@@ -108,9 +108,16 @@ zwrm agent budget [instance] — Show or set an agent's daily spend/run caps
       --daily-usd float   Daily spend cap in USD (0 = unlimited)
       --max-runs int      Daily run-count cap (0 = unlimited)
 
-zwrm agent chat — Share a chat with the organization, or take it back
+zwrm agent chat — Share a chat with the organization or chosen members, or take it back
 
-zwrm agent chat share <agent> <chat> — Share a chat (its key or workspace id) with the organization
+zwrm agent chat account <agent> <chat> <connection> <speaker|owner|agent> — Choose whose account a shared chat's calls to a connection use
+
+zwrm agent chat share <agent> <chat> — Share a chat (its key or workspace id) with the organization, or with chosen members
+      --memories       Bring your own memories into the shared chat
+      --skills         Bring your own skills into the shared chat
+      --with strings   Share with only these members (email or user id), instead of the whole organization
+
+zwrm agent chat sign-ins <agent> <chat> <on|off> — Let a shared chat use your own sign-ins during your turns
 
 zwrm agent chat unshare <agent> <chat> — Take a shared chat back private
 
