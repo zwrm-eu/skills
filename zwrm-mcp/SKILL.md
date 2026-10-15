@@ -143,6 +143,13 @@ zwrm mcp upstream add <name> <url> — Register an upstream MCP server
       --share                        Share it with the organization at once (default: private to you)
       --transport string             Upstream transport: streamable-http (default) or sse
 
+zwrm mcp upstream agent-credentials <name> — Set the app credentials agents act as on a per-user OAuth upstream
+      --clear                  Remove the app credentials
+      --client-id string       The app's client ID
+      --client-secret string   The app's client secret
+      --scope string           Scope to request (optional)
+      --token-url string       The OAuth token URL (Front: the AI agent's OAuth URL)
+
 zwrm mcp upstream grants <name> — List connected accounts on a per-user OAuth upstream
 
 zwrm mcp upstream list — List registered upstreams

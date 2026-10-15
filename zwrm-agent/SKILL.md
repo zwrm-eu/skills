@@ -332,10 +332,12 @@ zwrm triggers — Manage inbound triggers (external events → agent runs)
 
 zwrm triggers create <name> — Create an inbound trigger
       --default-agent string      Catch-all agent (id or name) when no route matches
+      --front-connection string   A Front AI agent's trigger (implies --provider front): the org's Front connection, whose members' sign-ins and AI agent credentials it uses
       --instruction string        The agent's task for each delivery
       --match string              Match-condition gate as JSON: [{path,op,value?}]
       --message-template string   Render {dot.path} tokens over the body (blank = raw body)
       --no-secret                 Create a slug-gated trigger with no secret
+      --provider string           Event source: webhook (default) or front
       --rate-per-day int          Daily delivery cap (0 = unlimited)
       --routes string             Routing rules as JSON: [{agent_id,when?}]
       --secret string             Import a provider-minted signing secret (Linear, Shopify, Sentry, Front) instead of generating one
