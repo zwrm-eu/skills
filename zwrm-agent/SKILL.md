@@ -279,7 +279,7 @@ zwrm agent tools set <agent> <integration> — Set what an agent may use of an i
 zwrm agent unshare <agent> — Take a shared agent back private
 
 zwrm agent update <instance-or-id> — Update an agent's name, avatar and defaults (size, model, effort, instructions, budget, TTL, scopes)
-      --allowed-scopes strings   Boot-token capabilities (comma-separated resource:action, e.g. apps:read,deploy,secrets:read,secrets:write,postgres:read,postgres:write,volumes:read,volumes:write,routes:write,logs:read,skills:read,skills:write,memories:read,memories:write,schedules:read,schedules:write,agents:read,agents:write,triggers:read,triggers:write,mcp:read,mcp:write,connectors:read,connectors:write,sessions:shell,ssh,scale,destroy,identity); empty resets to default
+      --allowed-scopes strings   Boot-token capabilities (comma-separated resource:action, e.g. apps:read,deploy,secrets:read,secrets:write,postgres:read,postgres:write,postgres:connect,volumes:read,volumes:write,routes:write,logs:read,skills:read,skills:write,memories:read,memories:write,schedules:read,schedules:write,agents:read,agents:write,triggers:read,triggers:write,mcp:read,mcp:write,connectors:read,connectors:write,sessions:shell,ssh,scale,destroy,identity); empty resets to default, which excludes the opt-in sessions:shell, postgres:connect and destroy
       --avatar string            Bird avatar: zwrm, woodpecker, eagle, owl, toucan, cardinal, hummingbird, duck, parrot, heron; "" lets the client pick
       --daily-budget float       Daily spend cap in USD (0 = unlimited)
       --disable-boot-token       Remove the boot token: revokes a live token now and mints no in-VM zwrm credential at later boots; --disable-boot-token=false restores it
