@@ -114,6 +114,7 @@ zwrm postgres unlink <database-name> — Unlink a database from an app
 - **Enable backups early** — PITR needs WAL archiving running *before* the moment you want to recover to.
 - **Prefer restore-into-new-name** and cut over after verifying; in-place restore replaces the live database.
 - `connect` returns the pooled endpoint by default; use `--direct` for tools that need a raw Postgres connection (e.g. some migration runners).
+- `connect` prints the superuser password. A scoped login (an agent's own, a scoped API token) needs the opt-in `postgres:connect` capability, which an agent's default set does not carry: a 403 there means ask the user to grant it. `create` prints the new database's password once.
 - Backups stream from the VM through the control plane to S3 — database VMs don't need S3 access for base backups.
 
 ## See also
