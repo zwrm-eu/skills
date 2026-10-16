@@ -332,7 +332,8 @@ zwrm triggers — Manage inbound triggers (external events → agent runs)
 
 zwrm triggers create <name> — Create an inbound trigger
       --default-agent string      Catch-all agent (id or name) when no route matches
-      --front-connection string   A Front AI agent's trigger (implies --provider front): the org's Front connection, whose members' sign-ins and AI agent credentials it uses
+      --front-answers string      Who a Front trigger answers: members (default; only members who connected their own Front account) or everyone (anyone else as the AI agent)
+      --front-connection string   A Front AI agent's trigger (implies --provider front): the org's Front connection, whose members' sign-ins it uses; --default-agent answers as its own Front AI agent there
       --instruction string        The agent's task for each delivery
       --match string              Match-condition gate as JSON: [{path,op,value?}]
       --message-template string   Render {dot.path} tokens over the body (blank = raw body)
@@ -362,6 +363,7 @@ zwrm triggers unshare <trigger-id> — Make a trigger private to you again
 zwrm triggers update <trigger-id> — Change a trigger in place (keeps its hook URL, secret and delivery log)
       --clear-default-agent       Remove the catch-all agent
       --default-agent string      New catch-all agent (id or name) when no route matches
+      --front-answers string      Who a Front trigger answers: members or everyone
       --instruction string        New task for the agent on each delivery
       --match string              Replace the match-condition gate, as JSON: [{path,op,value?}] ("" = remove it)
       --message-template string   Render {dot.path} tokens over the body ("" = raw body)
