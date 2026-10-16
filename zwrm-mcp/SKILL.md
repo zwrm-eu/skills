@@ -143,7 +143,8 @@ zwrm mcp upstream add <name> <url> — Register an upstream MCP server
       --share                        Share it with the organization at once (default: private to you)
       --transport string             Upstream transport: streamable-http (default) or sse
 
-zwrm mcp upstream agent-credentials <name> — Set the app credentials agents act as on a per-user OAuth upstream
+zwrm mcp upstream agent-credentials <name> — Set the app credentials an agent acts as on a per-user OAuth upstream
+      --agent string           The agent (id or name) whose own account they are
       --clear                  Remove the app credentials
       --client-id string       The app's client ID
       --client-secret string   The app's client secret
