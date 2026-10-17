@@ -148,6 +148,7 @@ zwrm mcp upstream agent-credentials <name> — Set the app credentials an agent 
       --clear                  Remove the app credentials
       --client-id string       The app's client ID
       --client-secret string   The app's client secret
+      --default                Make them the default every agent without its own acts as
       --scope string           Scope to request (optional)
       --token-url string       The OAuth token URL (Front: the AI agent's OAuth URL)
 
