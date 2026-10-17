@@ -1,7 +1,7 @@
 ---
 name: zwrm-deploy
 description: |
-  Deploy applications to ZWRM microVMs. Use this skill when the user wants to deploy an app, initialize a project config, build and ship code, scale machines up or down, expose an app on a hostname, move an app between orgs, or tear down an application. Triggers on "deploy", "ship", "launch", "push to production", "scale up", "scale down", "destroy the app", "tear down", "custom domain", "initialize project", or "create zwrm.toml".
+  Deploy applications to ZWRM microVMs. Use this skill when the user wants to deploy an app, initialize a project config, build and ship code, scale machines up or down, expose an app on a hostname, move an app between orgs, share an app with the organization or make it private, or tear down an application. Triggers on "deploy", "ship", "launch", "push to production", "scale up", "scale down", "destroy the app", "tear down", "custom domain", "initialize project", or "create zwrm.toml".
 allowed-tools:
   - Bash(zwrm *)
 ---
@@ -84,6 +84,7 @@ zwrm deploy — Deploy an application
       --ref string       Branch, tag, or commit for --repo (alternative to an @ref suffix; don't use both)
       --replicas int     Number of instances to deploy (default 1)
       --repo string      Deploy from a GitHub repo (github.com/owner/repo[@ref]); server-side clone, requires --app
+      --share            Share the app with the organization when deploy creates it (it is private to you otherwise)
 
 zwrm scale <count> — Scale application to desired number of machines
       --app string      Application name
@@ -100,6 +101,14 @@ zwrm transfer — Move an app to another organization
       --app string      App name (defaults to zwrm.toml in the current directory)
       --app-id string   App ID (alternative to --app)
       --to-org string   Destination organization slug or ID
+
+zwrm share — Share an app with the organization
+      --app string      Application name (default: from zwrm.toml)
+      --app-id string   Application ID
+
+zwrm unshare — Take a shared app back private
+      --app string      Application name (default: from zwrm.toml)
+      --app-id string   Application ID
 
 zwrm routes — Manage application routes
 
@@ -123,6 +132,8 @@ zwrm routes list — List routes for an application
 - **Scale-to-zero**: with `[autostop]` configured, idle machines stop and the proxy wakes them on the next request.
 - **CI deploys**: `zwrm init` scaffolds a GitHub Actions workflow using the `zwrm-eu/deploy-action` action; give it a scoped token (`zwrm auth tokens create --scopes apps:read,deploy`).
 - `zwrm transfer --to-org <org>` moves an app (machines, volumes, secrets) to another organization.
+- **A new app is private to whoever creates it** until they share it with the organization. One an agent creates is the member's it works for (in their private chat, or their own run), and shared when it works for no one in particular (a shared chat, or a run nobody owns). Sharing is for people, from the dashboard or with `zwrm share` (`zwrm unshare` takes it back) on their own login. From an agent's login, don't pass `--share`: it is refused for an agent working for a member and fails the whole deploy. Ask the user to share it.
+- **"An app named X exists, but this login can't see it"**: the name is taken by another member's private app, an app in another organization, or (from a shared chat) the user's own private app. Ask its owner to share it, or the user to continue in their private chat; never deploy under another name without asking.
 
 ## See also
 
