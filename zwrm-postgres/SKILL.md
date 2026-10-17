@@ -1,7 +1,7 @@
 ---
 name: zwrm-postgres
 description: |
-  Managed Postgres databases on ZWRM microVMs. Use this skill when the user wants to create a database, connect to Postgres, link a database to an app, manage backups, restore from backup, enable WAL archiving, or do point-in-time recovery. Triggers on "create a database", "postgres", "database", "backup", "restore", "WAL", "PITR", "connect to db", or "managed database".
+  Managed Postgres databases on ZWRM microVMs. Use this skill when the user wants to create a database, connect to Postgres, link a database to an app, manage backups, restore from backup, enable WAL archiving, do point-in-time recovery, or share a database with the organization. Triggers on "create a database", "postgres", "database", "backup", "restore", "WAL", "PITR", "connect to db", or "managed database".
 allowed-tools:
   - Bash(zwrm *)
 ---
@@ -75,6 +75,7 @@ zwrm postgres connect <name> — Get connection info for a PostgreSQL database
 
 zwrm postgres create <name> — Create a new PostgreSQL database
       --database string   Database name (defaults to instance name)
+      --share             Share it with the organization at once (it is private to you otherwise)
       --size string       Size preset (small, medium, large) (default "small")
 
 zwrm postgres destroy <name> — Delete a PostgreSQL database
@@ -101,12 +102,16 @@ zwrm postgres restore status <restore-id> — Get restore status
 
 zwrm postgres scale <name> <count> — Scale PostgreSQL read replicas
 
+zwrm postgres share <name> — Share a PostgreSQL database with the organization
+
 zwrm postgres start <name> — Start a stopped PostgreSQL database
 
 zwrm postgres stop <name> — Stop a PostgreSQL database
 
 zwrm postgres unlink <database-name> — Unlink a database from an app
       --app string   App name to unlink the database from (default: from zwrm.toml)
+
+zwrm postgres unshare <name> — Take a shared PostgreSQL database back private
 ```
 
 ## Tips
@@ -116,6 +121,7 @@ zwrm postgres unlink <database-name> — Unlink a database from an app
 - `connect` returns the pooled endpoint by default; use `--direct` for tools that need a raw Postgres connection (e.g. some migration runners).
 - `connect` prints the superuser password. A scoped login (an agent's own, a scoped API token) needs the opt-in `postgres:connect` capability, which an agent's default set does not carry: a 403 there means ask the user to grant it. `create` prints the new database's password once.
 - Backups stream from the VM through the control plane to S3 — database VMs don't need S3 access for base backups.
+- **A new database is private to whoever creates it** until they share it. One an agent creates is the member's it works for (in their private chat, or their own run), and shared when it works for no one in particular (a shared chat, or a run nobody owns). Sharing is for people, from the dashboard or with `zwrm postgres share my-db` (`unshare` takes it back) on their own login. From an agent's login, don't pass `--share`: it is refused for an agent working for a member and fails the create. Ask the user to share it. A shared app links only shared databases; a private app also links its owner's private ones.
 
 ## See also
 
