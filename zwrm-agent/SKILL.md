@@ -333,7 +333,7 @@ zwrm triggers — Manage inbound triggers (external events → agent runs)
 zwrm triggers create <name> — Create an inbound trigger
       --default-agent string      Catch-all agent (id or name) when no route matches
       --front-answers string      Who a Front trigger answers: members (default; only members who connected their own Front account) or everyone (anyone else as the AI agent)
-      --front-connection string   A Front AI agent's trigger (implies --provider front): the org's Front connection, whose members' sign-ins it uses; --default-agent answers as its own Front AI agent there
+      --front-connection string   A Front AI agent's trigger (implies --provider front): the org's Front connection, whose members' sign-ins it uses; --default-agent answers as its own Front AI agent there, whose credentials may follow the trigger
       --instruction string        The agent's task for each delivery
       --match string              Match-condition gate as JSON: [{path,op,value?}]
       --message-template string   Render {dot.path} tokens over the body (blank = raw body)
