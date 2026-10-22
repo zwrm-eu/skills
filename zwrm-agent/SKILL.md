@@ -282,12 +282,15 @@ zwrm agent update <instance-or-id> — Update an agent's name, avatar and defaul
       --allowed-scopes strings   Boot-token capabilities (comma-separated resource:action, e.g. apps:read,deploy,secrets:read,secrets:write,postgres:read,postgres:write,postgres:connect,volumes:read,volumes:write,routes:write,logs:read,skills:read,skills:write,memories:read,memories:write,schedules:read,schedules:write,agents:read,agents:write,triggers:read,triggers:write,tasks:read,tasks:write,mcp:read,mcp:write,connectors:read,connectors:write,sessions:shell,ssh,scale,destroy,identity); empty resets to default, which excludes the opt-in sessions:shell, postgres:connect and destroy
       --avatar string            Bird avatar: zwrm, woodpecker, eagle, owl, toucan, cardinal, hummingbird, duck, parrot, heron; "" lets the client pick
       --daily-budget float       Daily spend cap in USD (0 = unlimited)
+      --description string       What to ask this agent for, read by other agents (up to 400 characters; "" clears it)
       --disable-boot-token       Remove the boot token: revokes a live token now and mints no in-VM zwrm credential at later boots; --disable-boot-token=false restores it
       --effort string            Default reasoning effort: low|medium|high|xhigh|max
       --instructions string      Per-agent system-prompt append
       --max-runs-per-day int     Daily run cap (0 = unlimited)
       --model string             Default model (runtime-specific: opus/sonnet/fable for claude, auto [the zwrm default] or a catalog alias for zwrm, catalog aliases for codex)
       --name string              Display name people see, up to 40 characters; "" clears it (the handle shows)
+      --reviewed                 Mark an agent another agent made as reviewed, so other agents may ask it for tasks
+      --role string              Role other agents read before asking this one for a task, e.g. "Finance agent" (up to 60 characters; "" clears it)
       --size string              VM size preset (e.g. performance-2x)
       --workspace-ttl duration   Keyed-workspace TTL, e.g. 168h (default 7 days; 0 = never expire)
 
