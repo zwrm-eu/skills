@@ -278,7 +278,7 @@ zwrm agent tools set <agent> <integration> — Set what an agent may use of an i
 
 zwrm agent unshare <agent> — Take a shared agent back private
 
-zwrm agent update <instance-or-id> — Update an agent's name, avatar and defaults (size, model, effort, instructions, budget, TTL, scopes)
+zwrm agent update <instance-or-id> — Update an agent's name, avatar, runtime and defaults (size, model, effort, instructions, budget, TTL, scopes)
       --allowed-scopes strings   Boot-token capabilities (comma-separated resource:action, e.g. apps:read,deploy,secrets:read,secrets:write,postgres:read,postgres:write,postgres:connect,volumes:read,volumes:write,routes:write,logs:read,skills:read,skills:write,memories:read,memories:write,schedules:read,schedules:write,agents:read,agents:write,triggers:read,triggers:write,tasks:read,tasks:write,mcp:read,mcp:write,connectors:read,connectors:write,sessions:shell,ssh,scale,destroy,identity); empty resets to default, which excludes the opt-in sessions:shell, postgres:connect and destroy
       --avatar string            Bird avatar: zwrm, woodpecker, eagle, owl, toucan, cardinal, hummingbird, duck, parrot, heron; "" lets the client pick
       --daily-budget float       Daily spend cap in USD (0 = unlimited)
@@ -291,8 +291,10 @@ zwrm agent update <instance-or-id> — Update an agent's name, avatar and defaul
       --name string              Display name people see, up to 40 characters; "" clears it (the handle shows)
       --reviewed                 Mark an agent another agent made as reviewed, so other agents may ask it for tasks
       --role string              Role other agents read before asking this one for a task, e.g. "Finance agent" (up to 60 characters; "" clears it)
+      --runtime string           Switch the agent's runtime: zwrm, claude, or codex. Ends every chat session and terminal on it, stops its VMs and cancels its runs in progress
       --size string              VM size preset (e.g. performance-2x)
       --workspace-ttl duration   Keyed-workspace TTL, e.g. 168h (default 7 days; 0 = never expire)
+      --yes                      With --runtime, switch without asking
 
 zwrm schedules — Manage scheduled agent runs (cron → agent runs)
 
