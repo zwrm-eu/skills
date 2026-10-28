@@ -215,7 +215,7 @@ zwrm agent resize [instance] — Resize an agent's persistent volume
 zwrm agent run — Start an agent run (a prompt on one of your agents)
       --agent string       Run on this agent (instance name or agent ID) (required)
       --effort string      Reasoning effort: low|medium|high|xhigh|max (default: agent default)
-      --model string       Model, runtime-specific: opus/sonnet/fable for claude, auto [the zwrm default] or a catalog alias for zwrm, catalog aliases for codex (default: agent default)
+      --model string       Model, runtime-specific: opus/sonnet/haiku/fable for claude, auto [the zwrm default] or a catalog alias for zwrm, catalog aliases for codex (default: agent default)
       --prompt string      Task prompt for the agent (required)
       --session string     Session continuity key: same key = continue that workspace's context; empty = fresh workspace per run
       --size string        VM size preset for this run's VM, e.g. performance-2x (default: agent default)
@@ -225,7 +225,7 @@ zwrm agent run cancel <run-id> — Cancel an agent run
 
 zwrm agent run continue <run-id> — Continue a finished run's conversation with a follow-up run
       --effort string      Reasoning effort (default: the run being continued)
-      --model string       Model, runtime-specific: opus/sonnet/fable for claude, auto or a catalog alias for zwrm, catalog aliases for codex (default: the run being continued)
+      --model string       Model, runtime-specific: opus/sonnet/haiku/fable for claude, auto or a catalog alias for zwrm, catalog aliases for codex (default: the run being continued)
       --prompt string      Follow-up prompt (required)
       --size string        VM size preset (default: the run being continued)
       --timeout duration   Hard run timeout, e.g. 30m (0 = server default)
@@ -287,7 +287,7 @@ zwrm agent update <instance-or-id> — Update an agent's name, avatar, runtime a
       --effort string            Default reasoning effort: low|medium|high|xhigh|max
       --instructions string      Per-agent system-prompt append
       --max-runs-per-day int     Daily run cap (0 = unlimited)
-      --model string             Default model (runtime-specific: opus/sonnet/fable for claude, auto [the zwrm default] or a catalog alias for zwrm, catalog aliases for codex)
+      --model string             Default model (runtime-specific: opus/sonnet/haiku/fable for claude, auto [the zwrm default] or a catalog alias for zwrm, catalog aliases for codex)
       --name string              Display name people see, up to 40 characters; "" clears it (the handle shows)
       --reviewed                 Mark an agent another agent made as reviewed, so other agents may ask it for tasks
       --role string              Role other agents read before asking this one for a task, e.g. "Finance agent" (up to 60 characters; "" clears it)
