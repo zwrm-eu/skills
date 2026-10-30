@@ -167,6 +167,7 @@ zwrm mcp upstream tools <name> — List an upstream's synced tool catalog
 zwrm mcp upstream unshare <name> — Take the upstream back private
 
 zwrm mcp upstream update <name> — Change an upstream's settings
+      --calls-per-minute int     most tool calls a minute it takes, the whole organization together; 0 for the default
       --identity-policy string   user, user_then_agent, or agent
 ```
 
