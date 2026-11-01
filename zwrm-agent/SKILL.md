@@ -77,12 +77,13 @@ zwrm agent skills enable my-project <skill>       # live-syncs running workspace
 zwrm schedules create nightly-triage --agent my-project \
   --cron "0 6 * * *" --prompt "Triage new GitHub issues; comment on each"
 zwrm schedules list
+zwrm schedules get <schedule-id>      # the whole schedule, its prompt included
 zwrm schedules update <schedule-id> --cron "0 6 * * 1-5"
 zwrm schedules firings <schedule-id>
 zwrm schedules pause <schedule-id>
 ```
 
-Change a schedule with `update`. Deleting and recreating it gives it a new id and drops its session key, tags and firing log.
+Change a schedule with `update`, after reading it with `get`: `list` leaves out the prompt, and `--prompt` replaces the whole text. Deleting and recreating it gives it a new id and drops its session key, tags and firing log.
 
 ## Triggers (external events → runs)
 
@@ -91,9 +92,12 @@ Triggers give you a webhook URL; each delivery starts a run:
 ```bash
 zwrm triggers create sentry-alerts --default-agent my-project \
   --instruction "Investigate this Sentry alert and open an issue if real"
+zwrm triggers get <trigger-id>        # instruction, template, match and routes
 zwrm triggers update <trigger-id> --instruction "Investigate and link the related issue"
 zwrm triggers deliveries <trigger-id>
 ```
+
+Read a trigger with `get` before `update`: `list` leaves out the instruction, and `--instruction` replaces the whole text.
 
 `--match` gates deliveries, `--routes` picks agents per payload, `--session-key-path` keys workspace continuity on a payload field, `--secret` imports a provider-minted signing secret (Linear, Shopify, Sentry, Front).
 
@@ -312,6 +316,9 @@ zwrm schedules delete <schedule-id> — Delete a schedule (and its firing log)
 zwrm schedules firings <schedule-id> — Show a schedule's firing log (every due firing, any outcome)
       --limit int   Max firings to show (default 50)
 
+zwrm schedules get <schedule-id> — Show a schedule, its prompt included
+      --json   Output raw JSON
+
 zwrm schedules list — List scheduled runs
       --agent string           Only schedules for this agent (id or name)
       --metadata stringArray   Only schedules tagged with this key=value (repeatable, ANDed)
@@ -354,6 +361,9 @@ zwrm triggers delete <trigger-id> — Delete a trigger (and its delivery log)
 
 zwrm triggers deliveries <trigger-id> — Show a trigger's delivery log
       --limit int   Max deliveries to show (default 50)
+
+zwrm triggers get <trigger-id> — Show a trigger, its instruction and routing included
+      --json   Output raw JSON
 
 zwrm triggers list — List inbound triggers
 
