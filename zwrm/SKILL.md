@@ -10,7 +10,7 @@ allowed-tools:
 
 Deploy and manage lightweight Firecracker microVMs: apps, sandboxes, managed Postgres, persistent volumes, secrets, coding agents, and an MCP gateway — all through one CLI.
 
-Generated from zwrm `v0.38.5`. `zwrm <command> --help` is always authoritative.
+Generated from zwrm `v0.39.0`. `zwrm <command> --help` is always authoritative.
 
 ## Prerequisites
 
@@ -55,6 +55,7 @@ zwrm mcp        Run an MCP server exposing autonomous agent runs (stdio)
 zwrm org        Manage organizations and org resources
 zwrm postgres   Manage PostgreSQL databases
 zwrm routes     Manage application routes
+zwrm safety     Pause and resume agents, connectors, members and tokens (org owners and admins)
 zwrm sandbox    Manage sandboxes
 zwrm scale      Scale application to desired number of machines
 zwrm schedules  Manage scheduled agent runs (cron → agent runs)
