@@ -68,6 +68,28 @@ zwrm routes create --hostname api.example.com --port 8080
 zwrm routes list
 ```
 
+## Who can open the app
+
+A new app asks everyone who opens it to sign in to zwrm: only its owner while it's private, the organization's members once it's shared. The app gets who is visiting in headers only zwrm can set, so it needs no login of its own:
+
+| Header | |
+|---|---|
+| `X-Zwrm-User-Id`, `X-Zwrm-User-Email`, `X-Zwrm-User-Name` | the member (or a guest's address) |
+| `X-Zwrm-Role` | `owner`, `admin`, `operator` or `member` |
+| `X-Zwrm-Visitor` | `member`, `guest`, `key`, `agent`, `connector` or `public` |
+
+```bash
+zwrm apps access                              # who can open it
+zwrm apps access --public-path /webhooks/*    # a path outside services call
+zwrm apps access --public                     # anyone with the link
+curl -H "X-Zwrm-Pass: $(zwrm apps pass my-app)" https://my-app.zwrm.io/api   # call it yourself, 15 minutes
+zwrm apps keys create --name ci               # a machine's key (people only)
+```
+
+Plan for who calls it before you deploy: a webhook receiver needs a public path, a public website or an MCP server that outside clients (Claude.ai, ChatGPT) call directly needs to be public or to accept an access key, and a frontend in one app can't call another app's API with the visitor's sign-in. Deleting an app and deploying it again makes a new app, which asks visitors to sign in.
+
+Opening an app to everyone takes a person an admin allows to (admins, unless they changed it). From an agent it waits until such a person approves it in the dashboard. Guests (by email, or with a shared password) are set in the dashboard. A connector the organization built as an app keeps working: the platform lets its own calls through.
+
 ## Command reference
 
 ```text
@@ -121,6 +143,26 @@ zwrm routes delete <route-id> — Delete a route
 
 zwrm routes list — List routes for an application
       --app string   Application name (default: from zwrm.toml)
+
+zwrm apps — Who can open your apps
+
+zwrm apps access [app] — Show or change who can open an app
+      --members               ask everyone to sign in (the default for new apps)
+      --no-public-paths       remove every public path
+      --public                let anyone with the link open it
+      --public-path strings   a path anyone may reach on a signed-in app, e.g. /webhooks/* (replaces the list)
+
+zwrm apps keys — Machines' keys to an app
+
+zwrm apps keys create [app] — Make a key; it's shown once
+      --days int      how many days it lasts (default 365, or less if your workspace limits keys)
+      --name string   what the key is for (required)
+
+zwrm apps keys list [app] — List an app's keys
+
+zwrm apps keys revoke <app> <key-id> — Revoke a key
+
+zwrm apps pass [app] — Print a 15-minute pass to call an app that asks visitors to sign in
 ```
 
 ## Tips
