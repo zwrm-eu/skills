@@ -255,8 +255,9 @@ zwrm agent secrets set <name> [value] — Set a secret for an agent
 zwrm agent secrets unset <name> — Remove a secret from an agent
       --instance string   Agent instance name (default "default")
 
-zwrm agent share <agent> — Share an agent with the organization
-      --yes   Share it even though some of its connectors act as one account for every member
+zwrm agent share <agent> — Share an agent with the organization, or with chosen members
+      --with strings   Share with only these members (email or user id), instead of the whole organization
+      --yes            Share it even though some of its connectors act as one account for everyone who has it
 
 zwrm agent skills — Manage an agent's enabled skills
       --mine   Switch the skill only for your own private chats with the agent, and chats you share with --skills
