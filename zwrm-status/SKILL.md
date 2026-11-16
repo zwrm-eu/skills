@@ -1,7 +1,7 @@
 ---
 name: zwrm-status
 description: |
-  Check the status of apps, machines, and deployments on ZWRM. Use this skill when the user asks about the state of their infrastructure, wants to see what's running, check deployment progress, view machine health, or find monitoring dashboards. Triggers on "status", "what's running", "check my app", "is it deployed", "how many machines", "show me the state", or "dashboard".
+  Check the status of apps, machines, and deployments on ZWRM. Use this skill when the user asks about the state of their infrastructure, wants to see what's running, check deployment progress, or view machine health. Triggers on "status", "what's running", "check my app", "is it deployed", "how many machines", or "show me the state".
 allowed-tools:
   - Bash(zwrm *)
 ---
@@ -15,7 +15,6 @@ Check the status of apps, machines, and deployments.
 ```bash
 zwrm status                 # current app (reads zwrm.toml)
 zwrm status --app my-api    # a specific app
-zwrm dashboard              # monitoring dashboard URLs (--open to launch)
 ```
 
 Shows app info (name, ID, machine count), machines (ID, status, IP, size, region, uptime), and the latest deployment.
@@ -26,9 +25,6 @@ Shows app info (name, ID, machine count), machines (ID, status, IP, size, region
 zwrm status — Show application and machine status
       --app string      Application name
       --app-id string   Application ID
-
-zwrm dashboard — Show monitoring dashboard URLs
-      --open   Open the system overview dashboard in a browser
 ```
 
 ## Tips

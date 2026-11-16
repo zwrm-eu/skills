@@ -404,6 +404,20 @@ zwrm skills share <skill> — Share a skill with the organization: every member 
 zwrm skills unshare <skill> — Take a shared skill back: only you can use it again
 
 zwrm skills upload <skill> <bundle.zip> — Upload a bundle as the skill's next version
+
+zwrm templates — Manage agent templates
+
+zwrm templates create <name> — Create a new agent template
+      --context string       Docker build context directory (default: current directory)
+      --description string   Human-readable description of the template
+      --dockerfile string    Path to the Dockerfile for the template
+
+zwrm templates delete <name> — Delete a template
+  -f, --force   Skip confirmation prompt
+
+zwrm templates list — List available agent templates
+
+zwrm templates rebuild <name> — Build a template's image again
 ```
 
 ## Tips
@@ -417,4 +431,3 @@ zwrm skills upload <skill> <bundle.zip> — Upload a bundle as the skill's next 
 
 - [zwrm-mcp](../zwrm-mcp/SKILL.md) — give agents external tools
 - [zwrm-secrets](../zwrm-secrets/SKILL.md) — agent secret namespace
-- [zwrm-sandbox](../zwrm-sandbox/SKILL.md) — plain code execution without an agent identity

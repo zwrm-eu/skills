@@ -24,7 +24,6 @@ Useful variants:
 ```bash
 zwrm deploy --force-build            # bypass the build cache
 zwrm deploy --context ./services/api # build from another directory
-zwrm deploy --replicas 3             # deploy N machines at once
 zwrm scale 3                         # scale an already-deployed app
 zwrm destroy --machine <id>          # remove one machine
 zwrm destroy --all                   # remove app + all machines (add -f to skip confirm)
@@ -103,7 +102,6 @@ zwrm deploy — Deploy an application
       --app string       Application name (default: from zwrm.toml)
       --context string   Build context directory (default: current directory)
       --force-build      Force rebuild, bypass cache
-      --replicas int     Number of instances to deploy (default 1)
       --share            Share the app with the organization when deploy creates it (it is private to you otherwise)
 
 zwrm scale <count> — Scale application to desired number of machines

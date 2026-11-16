@@ -27,12 +27,6 @@ description: |
 - For CI and automation, mint **capability-scoped tokens**: `zwrm auth tokens create --name ci --scopes apps:read,deploy,logs:read --expiry 8760h`. An empty scope list creates an unrestricted token — avoid that outside interactive use.
 - Revoke unused tokens: `zwrm auth tokens list` / `zwrm auth tokens revoke <id>`.
 
-## Sandboxes
-
-- Sandboxes run untrusted code in isolated Firecracker microVMs; ephemeral ones auto-destroy at their timeout.
-- For untrusted workloads, lock down egress: `--egress-mode deny_all` plus explicit `--egress-allow-cidr` (optionally `--egress-allow-port`) allowlists. Templates can set egress defaults for every sandbox created from them.
-- Set the shortest timeout that fits the job; use `keepalive` to extend rather than starting long.
-
 ## Agent VMs
 
 - Agent secrets (`zwrm agent secrets set`) are injected at boot; rotate by setting the new value and restarting the agent VM.

@@ -1,16 +1,16 @@
 ---
 name: zwrm
 description: |
-  MicroVM orchestration via the ZWRM CLI. Use this skill whenever the user wants to deploy an app, manage VMs, create sandboxes, manage Postgres databases, view logs, manage secrets, run coding agents, schedule agent runs, or connect MCP tools on ZWRM. Also use when they say "deploy", "launch", "scale", "spin up a VM", "create a sandbox", "start a database", "check status", or reference managing infrastructure on ZWRM. Do NOT trigger for local file operations, git commands, or code editing tasks unrelated to ZWRM.
+  MicroVM orchestration via the ZWRM CLI. Use this skill whenever the user wants to deploy an app, manage VMs, manage Postgres databases, view logs, manage secrets, run coding agents, schedule agent runs, or connect MCP tools on ZWRM. Also use when they say "deploy", "launch", "scale", "spin up a VM", "start a database", "check status", or reference managing infrastructure on ZWRM. Do NOT trigger for local file operations, git commands, or code editing tasks unrelated to ZWRM.
 allowed-tools:
   - Bash(zwrm *)
 ---
 
 # ZWRM CLI
 
-Deploy and manage lightweight Firecracker microVMs: apps, sandboxes, managed Postgres, persistent volumes, secrets, coding agents, and an MCP gateway — all through one CLI.
+Deploy and manage lightweight Firecracker microVMs: apps, managed Postgres, persistent volumes, secrets, coding agents, and an MCP gateway — all through one CLI.
 
-Generated from zwrm `v0.39.53`. `zwrm <command> --help` is always authoritative.
+Generated from zwrm `v0.40.0`. `zwrm <command> --help` is always authoritative.
 
 ## Prerequisites
 
@@ -27,7 +27,6 @@ If not installed or not logged in, see [rules/install.md](rules/install.md). For
 | Need | Command | Skill |
 | --- | --- | --- |
 | Deploy an application | `zwrm deploy` | [zwrm-deploy](../zwrm-deploy/SKILL.md) |
-| Run ephemeral code in isolation | `zwrm sandbox create` / `zwrm sandbox run` | [zwrm-sandbox](../zwrm-sandbox/SKILL.md) |
 | Managed database | `zwrm postgres create` | [zwrm-postgres](../zwrm-postgres/SKILL.md) |
 | Persistent storage | `zwrm volumes create` | [zwrm-volumes](../zwrm-volumes/SKILL.md) |
 | Environment variables / API keys | `zwrm secrets set` | [zwrm-secrets](../zwrm-secrets/SKILL.md) |
@@ -45,7 +44,6 @@ zwrm agent      Manage agents and their workspaces
 zwrm apps       Who can open your apps
 zwrm auth       Manage authentication
 zwrm credits    Prepaid credits: balance, history, usage
-zwrm dashboard  Show monitoring dashboard URLs
 zwrm deploy     Deploy an application
 zwrm destroy    Destroy machines or entire application
 zwrm files      Hand files to connector tools, and save files they return
@@ -59,7 +57,6 @@ zwrm postgres   Manage PostgreSQL databases
 zwrm privacy    Find, export or erase what an organization holds about one person (org owners and admins)
 zwrm routes     Manage application routes
 zwrm safety     Pause and resume agents, connectors, members and tokens (org owners and admins)
-zwrm sandbox    Manage sandboxes
 zwrm scale      Scale application to desired number of machines
 zwrm schedules  Manage scheduled agent runs (cron → agent runs)
 zwrm secrets    Manage application secrets
