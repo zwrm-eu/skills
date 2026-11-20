@@ -184,6 +184,16 @@ zwrm agent list — List agents across all organizations
 zwrm agent logs [instance] — Show activity logs for an agent
       --limit int   Maximum number of log entries (default 50)
 
+zwrm agent mail — An agent's own email addresses
+
+zwrm agent mail access <agent> — Show or set who can email an agent, and whom it may email
+      --anyone string           Anyone else: off, read or read_write
+      --clear-contacts          Empty the contacts
+      --company string          People in your company: off, read or read_write
+      --contacts strings        Replace the contacts: domains and addresses, comma-separated
+      --contacts-level string   Your contacts: off, read or read_write
+      --mailbox string          Only this mailbox: gmail or outlook
+
 zwrm agent memory — Curate an agent's durable memory entries
       --mine           Act on your own memories on the agent
       --owner string   Act on this member's own memories (org admins: show and delete)
