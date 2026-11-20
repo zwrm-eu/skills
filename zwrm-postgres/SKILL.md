@@ -100,6 +100,8 @@ zwrm postgres restore <name> — Restore a database from backup
 
 zwrm postgres restore status <restore-id> — Get restore status
 
+zwrm postgres rotate-password <name> — Give a PostgreSQL database a new password
+
 zwrm postgres scale <name> <count> — Scale PostgreSQL read replicas
 
 zwrm postgres share <name> — Share a PostgreSQL database with the organization
