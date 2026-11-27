@@ -147,6 +147,8 @@ zwrm apps — Who can open your apps
 zwrm apps access [app] — Show or change who can open an app
       --members               ask everyone to sign in (the default for new apps)
       --no-public-paths       remove every public path
+      --only-owner            keep your private app to yourself: remove every member it's opened to
+      --open-to strings       members of your workspace (email or user id) who may also open your private app (replaces the list)
       --public                let anyone with the link open it
       --public-path strings   a path anyone may reach on a signed-in app, e.g. /webhooks/* (replaces the list)
 
